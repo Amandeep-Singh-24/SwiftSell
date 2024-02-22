@@ -19,7 +19,7 @@
 | member2      |               |                 |
 | Alexis Alvarez |  aalvarez26@mail.sfsu.edu      |    alexisalvz3        |
 | member4      |               |                 |
-| member5      | asingh51@sfsu.edu               |  Amandeep-Singh-24     |
+| Amandeep Singh      | asingh51@sfsu.edu               |  Amandeep-Singh-24     |
 | member6      |               |                 |
 
 ## NO code needs to be stored in the root of your repository. You may rename the application folder if you like to your team's application name. But all source code related to your team's application should be stored inside the application folder.
