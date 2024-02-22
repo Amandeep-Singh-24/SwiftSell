@@ -15,7 +15,7 @@
 
 | Student Name | Student Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
-| member1      |               |                 |
+| Aymane Arfaoui      | aarfaoui@sfsu.edu              |Aymane-Arfaoui                 |
 | member2      |               |                 |
 | Alexis Alvarez |  aalvarez26@mail.sfsu.edu      |    alexisalvz3        |
 | member4      |               |                 |
