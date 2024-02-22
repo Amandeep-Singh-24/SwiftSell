@@ -16,7 +16,7 @@
 | Student Name | Student Email | GitHub Username |
 |    :---:     |     :---:     |     :---:       |
 | Aymane Arfaoui      | aarfaoui@sfsu.edu              |Aymane-Arfaoui                 |
-| member2      |               |                 |
+| Markus Reyer     |     mreyer1@sfsu.edu          |    markusreyer             |
 | Alexis Alvarez |  aalvarez26@mail.sfsu.edu      |    alexisalvz3        |
 | member4      |               |                 |
 | Amandeep Singh      | asingh51@sfsu.edu               |  Amandeep-Singh-24     |
