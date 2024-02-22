@@ -17,7 +17,7 @@
 |    :---:     |     :---:     |     :---:       |
 | member1      |               |                 |
 | member2      |               |                 |
-| member3 Alexis Alvarez |  aalvarez26@mail.sfsu.edu      |    alexisalvz3        |
+| Alexis Alvarez |  aalvarez26@mail.sfsu.edu      |    alexisalvz3        |
 | member4      |               |                 |
 | member5      |               |                 |
 | member6      |               |                 |
