@@ -18,7 +18,7 @@
 | Aymane Arfaoui      | aarfaoui@sfsu.edu              |Aymane-Arfaoui                 |
 | Markus Reyer     |     mreyer1@sfsu.edu          |    markusreyer             |
 | Alexis Alvarez |  aalvarez26@mail.sfsu.edu      |    alexisalvz3        |
-| member4      |               |                 |
+| David Daly      |ddaly@sfsu.edu|deltabdelt|
 | Amandeep Singh      | asingh51@sfsu.edu               |  Amandeep-Singh-24     |
 | member6      |               |                 |
 
