@@ -1,0 +1,32 @@
+{% extends "base_aboutme.html" %}
+
+{% block title %}Dave Daly's About Me{% endblock %}
+
+{% block content %}
+<!-- Main content centered on the page -->
+<div class="centered-content">
+    <!-- Page title -->
+    <div class="header">
+        <h1>Dave Daly's About Me</h1>
+    </div>
+    
+    <!-- Container for profile and description -->
+    <div class="card-container">
+        <!-- Displaying the profile picture -->
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/image1.jpg') }}" alt="Dave Daly" style="max-width: 100%; height: auto;">
+        </div>
+        
+        <!-- Description section with a brief intro and contact button -->
+        <div class="card">
+            <div class="card-body">
+                <h2>Thank you for viewing my profile!</h2>
+                <p class="about-text">
+                    I am a Computer Science master's student at San Francisco State University, also pursuing a Graduate Certificate in Ethical Artificial Intelligence from SFSU.  
+                </p>
+                <button class="btn contact-btn">Contact me</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
