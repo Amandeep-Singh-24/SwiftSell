@@ -1,0 +1,33 @@
+{% extends "base_aboutme.html" %}
+
+{% block title %}Aymane Arfaoui's About Me{% endblock %}
+
+{% block content %}
+<!-- Main content centered on the page -->
+<div class="centered-content">
+    <!-- Page title -->
+    <div class="header">
+        <h1>Aymane Arfaoui's About Me</h1>
+    </div>
+    
+    <!-- Container for profile and description -->
+    <div class="card-container">
+        <!-- Displaying the profile picture -->
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/aymanepicture.jpg') }}" alt="Aymane Arfaoui" style="max-width: 100%; height: auto;">
+        </div>
+        
+        <!-- Description section with a brief intro and contact button -->
+        <div class="card">
+            <div class="card-body">
+                <h2>Hi ! Great Meeting you</h2>
+                <p class="about-text">
+                    Hi, My name is Aymane Arfaoui. I am an exchange student from Montreal Canada. I am really happy to be doing an exchange term here at San Francisco State University.
+                    Our goal as a team is to deliver an excellent project for SFSU students where they can find a place to exchange textbooks, access tutoring lessons and much more !
+                </p>
+                <button class="btn contact-btn">Contact me</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
