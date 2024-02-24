@@ -1,0 +1,32 @@
+{% extends "base_aboutme.html" %}
+
+{% block title %}Markus Reyer's About Me{% endblock %}
+
+{% block content %}
+<!-- Main content centered on the page -->
+<div class="centered-content">
+    <!-- Page title -->
+    <div class="header">
+        <h1>Markus Reyer's About Me</h1>
+    </div>
+    
+    <!-- Container for profile and description -->
+    <div class="card-container">
+        <!-- Displaying the profile picture -->
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/image1.jpg') }}" alt="Amandeep Singh" style="max-width: 100%; height: auto;">
+        </div>
+        
+        <!-- Description section with a brief intro and contact button -->
+        <div class="card">
+            <div class="card-body">
+                <h2>Thank you for viewing my profile!</h2>
+                <p class="about-text">
+                    I am a Computer Science major at San Francisco State University, currently pursuing my undergraduate degree.  
+                </p>
+                <button class="btn contact-btn">Contact me</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
