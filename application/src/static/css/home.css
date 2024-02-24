@@ -1,0 +1,109 @@
+/* General body styles set the background color, text color, and font family for the whole page. */
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* The .header class styles are for the page header section, including background, text alignment, and shadow for depth. */
+.header {
+    text-align: left;
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Ensuring header elements (h1-h4) have consistent margin, padding, and inline-block display for alignment. */
+.header h1, .header h2, .header h3, .header h4 {
+    margin: 0;
+    padding: 0.2rem 0;
+    color: #212529;
+    display: inline-block;
+    margin-right: 2rem;
+}
+
+/* Specific font sizes for different header elements to establish visual hierarchy. */
+.header h1 {
+    font-size: 1.5rem;
+}
+.header h2, .header h3, .header h4 {
+    font-size: 1.2rem;
+}
+
+/* Styling for list items to appear as cards with rounded borders, shadow, and hover effects. */
+.list-group-item {
+    border-radius: 20px;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.list-group-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Container for links, ensuring they are centered and column-aligned. */
+.link-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* The .about-section is designed to center the content, add padding, and set a max width for readability. */
+.about-section {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Title styling within the .about-section for emphasis. */
+.about-title {
+    margin-bottom: 2rem;
+    color: #333;
+    font-size: 2rem;
+}
+
+/* Styling for individual links in the about list to look clean and modern. */
+.about-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.about-list a {
+    text-decoration: none;
+    color: #333;
+    background-color: #f8f9fa;
+    display: block;
+    padding: 1rem;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s ease;
+}
+.about-list a:hover {
+    background-color: #e2e2e2;
+}
+
+/* Footer styles */
+.footer {
+    position: fixed; /* Fixed position */
+    left: 0;
+    bottom: 0; /* Align to bottom */
+    width: 100%; /* Full width */
+    background-color: #fff; /* Footer background */
+    color: #333; /* Footer text color */
+    text-align: center; /* Center the text */
+    padding: 1rem 0; /* Padding for top and bottom */
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1); /* Shadow at the top of the footer */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typography */
+  }
+  
+  /* Ensure that the body content does not get hidden behind the footer */
+  body {
+    padding-bottom: 60px; /* Adjust this value based on the height of your footer */
+  }

@@ -1,0 +1,115 @@
+/* Base page styling */
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header style */
+.header {
+    text-align: left;
+    padding: 1rem;
+    font-size: 1.25rem;
+    color: black;
+    margin-bottom: 1rem;
+}
+
+/* Card styling for content blocks */
+.card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 1rem;
+    width: auto;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+/* Content within cards */
+.card-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Descriptive text and button styling */
+.about-text {
+    font-size: 1.5rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.contact-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+}
+
+.contact-btn:hover {
+    background-color: #a9a9a9;
+}
+
+/* Ensuring content is centrally aligned */
+.centered-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Card container adjustments */
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Footer styles */
+.footer {
+    position: fixed; /* Fixed position */
+    left: 0;
+    bottom: 0; /* Align to bottom */
+    width: 100%; /* Full width */
+    background-color: #fff; /* Footer background */
+    color: #333; /* Footer text color */
+    text-align: center; /* Center the text */
+    padding: 1rem 0; /* Padding for top and bottom */
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1); /* Shadow at the top of the footer */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typography */
+  }
+  
+  /* Ensure that the body content does not get hidden behind the footer */
+  body {
+    padding-bottom: 60px; /* Adjust this value based on the height of your footer */
+  }
+  
+/* Responsive adjustments for cards on larger screens */
+@media (min-width: 768px) {
+    .card {
+        flex-basis: 40%;
+        max-width: 40%;
+    }
+    .card-img-top {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    .card-body {
+        height: 100%; /* Adjust height to fill the card */
+    }
+}

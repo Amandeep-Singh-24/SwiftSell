@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Engineering Class SFSU - Team 4</title>
+    <!-- Bootstrap for responsive styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this page -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    <!-- Page header with course and team information -->
+    <div class="header">
+        <h2>| Software Engineering Class SFSU | Section 03 | Team 4 | Spring 2024 |</h2>
+    </div>
+
+    <!-- Section introducing the team members -->
+    <div class="about-section">
+        <h2 class="about-title">Learn about us!</h2>
+        <!-- Links to detailed 'About Me' pages for each team member -->
+        <ul class="about-list">
+            <a href="/about/amandeepsingh" class="list-group-item list-group-item-action">Amandeep Singh</a>
+            <a href="/about/aymanearfaoui" class="list-group-item list-group-item-action">Aymane Arfaoui</a>
+            <a href="/about/alexisalvarez" class="list-group-item list-group-item-action">Alexis Alvarez</a>
+            <a href="/about/davedaly" class="list-group-item list-group-item-action">Dave Daly</a>
+            <a href="/about/markusreyer" class="list-group-item list-group-item-action">Markus Reyer</a>
+        </ul>
+    </div>
+    <!-- Footer section -->
+<footer class="footer">
+    <div class="container text-center">
+        &copy; 2024 SFSU Software Engineering Class - Team 4. All Rights Reserved.
+    </div>
+</footer>
+
+    <!-- Bootstrap JavaScript bundle -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
