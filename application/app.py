@@ -17,9 +17,9 @@ def about_amandeepsingh():
 def about_aymanearfaoui():
     return render_template('about_aymanearfaoui.html')
 
-# @app.route('/about/alexisalvarez')
-# def about_alexisalvarez():
-#     return render_template('about_alexisalvarez.html')
+@app.route('/about/alexisalvarez')
+def about_alexisalvarez():
+    return render_template('about_alexisalvarez.html')
 
 @app.route('/about/davedaly')
 def about_davedaly():
