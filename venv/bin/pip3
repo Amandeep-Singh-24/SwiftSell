@@ -1,4 +1,4 @@
-#!/Users/amansingh/Desktop/csc648-sp24-03-team04/venv/bin/python3.12
+#!/var/www/csc648-sp24-03-team04/venv/bin/python3.10
 # -*- coding: utf-8 -*-
 import re
 import sys
