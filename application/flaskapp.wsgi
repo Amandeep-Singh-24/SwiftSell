@@ -1,9 +1,9 @@
 import sys
 
-# Adjust the following line to the path where your Flask app is located
-sys.path.insert(0, '/home/ubuntu/source/csc648-sp24-03-team04/application')
+sys.path.insert(0, '/var/www/csc648-sp24-03-team04/application')
 
-# Import the Flask app object. Adjust 'application' to match the name of your Flask app.
-# For example, if your main file is app.py and it contains a Flask application object
-# named 'app', then it would be 'from application.app import app as application'
+sys.path.insert(1, '/var/www/csc648-sp24-03-team04/venv/lib/python3.10/site-packages')
+
+sys.path.insert(2, '/var/www/csc648-sp24-03-team04/venv/lib64/python3.10/site-packages')
+
 from app import app as application
