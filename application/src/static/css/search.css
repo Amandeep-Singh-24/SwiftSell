@@ -1,0 +1,221 @@
+/* search.css - Full CSS content */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Small black header styling */
+.small-header {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    margin-bottom: 0; /* No bottom margin */
+}
+
+/* Full-width navigation bar adjustments */
+.nav-search-bar {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between; /* Space between nav items */
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Navigation items styling */
+.nav-item {
+    padding: 5px 10px;
+    text-decoration: none;
+    color: black; /* Text color */
+    font-weight: bold;
+    margin: 0 10px; /* Margin around nav items for spacing */
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    color: #0056b3; /* Color change on hover */
+}
+
+/* Search form customization for inline display */
+.search-section {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Adjustments for the search input */
+.search-section .form-control {
+    flex-grow: 1;
+    border: none;
+    padding: 5px 8px;
+}
+
+/* Adjustments for the categories dropdown */
+.search-section .form-select {
+    border: none;
+    padding: 5px 8px;
+    margin-left: -1px; /* Align with the search input */
+}
+
+/* Search button styling */
+.search-section button {
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    margin-left: -1px; /* Align with the dropdown */
+    border-radius: 5px;
+}
+
+/* Cards layout for two items per row */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -10px; /* Right margin negative value of the gap */
+    margin-left: -10px;  /* Left margin negative value of the gap */
+}
+
+
+.card {
+    flex: 0 0 calc(50% - 20px); /* Adjust for gap, two per row */
+    display: flex;
+    justify-content: space-between; /* Distribute space between elements inside the card */
+    align-items: center; /* Align elements vertically */
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative; /* For absolute positioning of card-info */
+    border: 1px solid #dcdcdc; /* Light gray border */
+    margin: 7px;
+}
+
+.card:hover {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.card-info {
+    border-left: 2px solid #dcdcdc; /* Gray line to separate the price and button */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end; /* Align items to the end (right side) */
+    height: 100%; /* Take full height of the card */
+}
+
+/* Style for 'Contact Seller' button */
+.card button {
+    padding: 10px 20px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px; /* Space above the button */
+    cursor: pointer;
+}
+
+.card button:hover {
+    background-color: #5f666d;
+}
+
+.card img {
+    border-radius: 5px;
+    margin-right: 20px; /* Add margin to separate image from text */
+}
+
+.card-body {
+    display: flex;
+    align-items: start; /* Align to the top */
+    flex-grow: 1; /* Allow the body to grow */
+}
+
+.card-title {
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+}
+
+.card-text {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 1em;
+}
+
+/* Adjust the price to be more prominent */
+.card-price {
+    font-weight: bold;
+    color: #d83a3a; /* Green color for price */
+    font-size: 1.2em;
+    margin-right: auto; /* Pushes the button to the right */
+}
+
+.contact-seller {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact-seller:hover {
+    background-color: #0056b3;
+}
+
+.results-sort-line {
+    align-items: center;
+    border-bottom: 1px solid #ccc; /* Line underneath the sort bar */
+    margin-bottom: 15px; /* Space before item cards start */
+}
+
+.sort-section {
+    display: flex;
+    align-items: center;
+}
+
+.sort-section .form-label {
+    margin-right: 5px;
+}
+
+.sort-section .form-select {
+    width: auto; /* Allow the select to shrink/grow as needed */
+}
+
+/* Responsive design for cards */
+@media (max-width: 768px) {
+    .card {
+        flex-direction: column;
+        align-items: flex-start;
+        flex: 0 0 100%;
+    }
+    .card-info {
+        position: absolute;
+        top: 20px; /* Same as card's padding */
+        right: 20px; /* Same as card's padding */
+        border: none; /* Remove border for mobile view */
+    }
+    .card img {
+        width: 100%; /* Full width on smaller screens */
+        margin-bottom: 10px; /* Space below image on smaller screens */
+    }
+    .nav-search-bar {
+        flex-direction: column;
+        align-items: stretch; /* Align items to stretch to full width */
+    }
+    
+    .nav-item {
+        margin-bottom: 5px; /* Space below each item */
+    }
+    
+    .search-section {
+        order: 3; /* Position the search section last */
+        margin-top: 10px; /* Space above the search section */
+    }
+}
