@@ -7,17 +7,17 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
--- CREATE DATABASE IF NOT EXISTS `swiftselldb`
+
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
-CREATE DATABASE IF NOT EXISTS `swiftselldb` DEFAULT CHARACTER SET utf8 ;
-USE `swiftselldb` ;
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
 
 -- -----------------------------------------------------
--- Table `swiftselldb`.`registered_user`
+-- Table `mydb`.`registered_user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `swiftselldb`.`registered_user` (
+CREATE TABLE IF NOT EXISTS `mydb`.`registered_user` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(255) NULL,
   `last_name` VARCHAR(255) NULL,
@@ -35,9 +35,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `swiftselldb`.`categories`
+-- Table `mydb`.`categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `swiftselldb`.`categories` (
+CREATE TABLE IF NOT EXISTS `mydb`.`categories` (
   `categories_id` INT NOT NULL,
   `category_name` VARCHAR(45) NULL,
   PRIMARY KEY (`categories_id`))
@@ -45,9 +45,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `swiftselldb`.`items_for_sale`
+-- Table `mydb`.`items_for_sale`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `swiftselldb`.`items_for_sale` (
+CREATE TABLE IF NOT EXISTS `mydb`.`items_for_sale` (
   `item_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NOT NULL,
   `description` MEDIUMTEXT NULL,
@@ -65,37 +65,43 @@ CREATE TABLE IF NOT EXISTS `swiftselldb`.`items_for_sale` (
   CONSTRAINT `fk_items_for_sale_registered_user`
     FOREIGN KEY (`seller`)
     REFERENCES `mydb`.`registered_user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_items_for_sale_categories1`
     FOREIGN KEY (`category_id`)
-    REFERENCES `swiftselldb`.`categories` (`categories_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `mydb`.`categories` (`categories_id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `swiftselldb`.`message`
+-- Table `mydb`.`message`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `swiftselldb`.`message` (
+CREATE TABLE IF NOT EXISTS `mydb`.`message` (
   `message_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `content` VARCHAR(255) NULL,
   `message_date` DATETIME NULL DEFAULT current_timestamp,
-  `sender_id` INT UNSIGNED NOT NULL,
+  `sender_id` INT NOT NULL,
   `item_id` INT UNSIGNED NOT NULL,
-  `recipient_id` INT UNSIGNED NOT NULL,
+  `seller_id` INT NOT NULL,
   PRIMARY KEY (`message_id`),
   INDEX `fk_message_registered_user1_idx` (`sender_id` ASC) VISIBLE,
-  INDEX `fk_message_items_for_sale1_idx` (`item_id` ASC, `recipient_id` ASC) VISIBLE,
-  CONSTRAINT `fk_message_registered_user_user_id`
+  INDEX `fk_message_items_for_sale1_idx` (`item_id` ASC) VISIBLE,
+  INDEX `fk_message_items_for_sale2_idx` (`seller_id` ASC) VISIBLE,
+  CONSTRAINT `fk_message_registered_user1`
     FOREIGN KEY (`sender_id`)
     REFERENCES `mydb`.`registered_user` (`user_id`)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_message_items_for_sale1`
+    FOREIGN KEY (`item_id`)
+    REFERENCES `mydb`.`items_for_sale` (`item_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_message_items_for_sale1`
-    FOREIGN KEY (`item_id` , `recipient_id`)
-    REFERENCES `swiftselldb`.`items_for_sale` (`item_id` , `seller`)
+  CONSTRAINT `fk_message_items_for_sale2`
+    FOREIGN KEY (`seller_id`)
+    REFERENCES `mydb`.`items_for_sale` (`seller`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
