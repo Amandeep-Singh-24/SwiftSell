@@ -1,9 +1,18 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
+import mysql.connector
 
 app = Flask(__name__,
             template_folder='templates',
             static_folder='src/static',
             static_url_path='/static')
+
+# Database connection info. Note that this is not a secure connection.
+db_config = {
+    'user': 'ubuntu',
+    'password': 'Aman2423!',
+    'host': '127.0.0.1',
+    'database': 'swiftselldb'
+}
 
 @app.route('/')
 def home():
