@@ -8,8 +8,8 @@ app = Flask(__name__,
 
 # Database connection info. Note that this is not a secure connection.
 db_config = {
-    'user': 'root',
-    'password': '123456789',
+    'user': 'ubuntu',
+    'password': 'Aman2423!',
     'host': '127.0.0.1',
     'database': 'swiftselldb'
 }
