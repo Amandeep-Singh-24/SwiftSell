@@ -18,7 +18,8 @@
 
 /* Full-width navigation bar adjustments */
 .nav-search-bar {
-    background-color: #f8f9fa;
+    background-color: white;
+    margin-bottom: 1px;
     padding: 10px 15px;
     display: flex;
     justify-content: space-between; /* Space between nav items */
@@ -61,7 +62,7 @@
 .search-section .form-select {
     border: none;
     padding: 5px 8px;
-    margin-left: -1px; /* Align with the search input */
+    margin-left: 5px; /* Align with the search input */
 }
 
 /* Search button styling */
@@ -70,7 +71,7 @@
     color: #fff;
     border: none;
     padding: 5px 10px;
-    margin-left: -1px; /* Align with the dropdown */
+    margin-left: 5px; /* Align with the dropdown */
     border-radius: 5px;
 }
 
@@ -78,8 +79,9 @@
 .card-container {
     display: flex;
     flex-wrap: wrap;
-    margin-right: -10px; /* Right margin negative value of the gap */
-    margin-left: -10px;  /* Left margin negative value of the gap */
+    justify-content: flex-start; /* This will take care of equal spacing around items */
+    align-items: flex-start;
+    gap: 10px; /* This adds space between the cards without the need for negative margins */
 }
 
 
@@ -103,7 +105,7 @@
 
 .card-info {
     border-left: 2px solid #dcdcdc; /* Gray line to separate the price and button */
-    padding: 10px;
+    padding: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -129,6 +131,8 @@
 .card img {
     border-radius: 5px;
     margin-right: 20px; /* Add margin to separate image from text */
+    height: 200px;
+    width: 175px;
 }
 
 .card-body {
@@ -170,22 +174,62 @@
 }
 
 .results-sort-line {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ccc; /* Line underneath the sort bar */
-    margin-bottom: 15px; /* Space before item cards start */
+    padding: 10px 0;
+    border-bottom: 2px solid #ddd;
+    font-size: 14px;
+    color: #333;
+    background-color: white;
 }
 
+.results-sort-line span {
+    font-weight: bold; /* Making the numbers bold */
+}
+
+/* Styling for the 'Sort by' dropdown and label */
 .sort-section {
     display: flex;
     align-items: center;
 }
 
 .sort-section .form-label {
-    margin-right: 5px;
+    margin-right: 10px;
+    font-weight: normal;
+    color: #555;
 }
 
 .sort-section .form-select {
-    width: auto; /* Allow the select to shrink/grow as needed */
+    padding: .375rem .75rem; /* Bootstrap's default padding for select */
+    font-size: .875rem; /* Smaller font size for the dropdown */
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: .25rem; /* Bootstrap's default border radius */
+    background-color: #fff;
+    background-clip: padding-box;
+}
+
+.results-note {
+    padding: 10px 0;
+    text-align: left;
+}
+
+.results-note h2 {
+    font-size: 1.5em; /* Adjust the size as needed */
+    margin-bottom: 5px; /* Space between the heading and the note */
+}
+
+.results-note p {
+    font-size: 0.9em; /* Smaller text for the note */
+    color: #666; /* Dark grey color */
+    margin-bottom: 1em; /* Space below the note, before the cards start */
+}
+
+/* Logo styles */
+.navbar-logo {
+    height: 75px; /* or the height you want */
+    width: auto; /* maintain aspect ratio */
 }
 
 /* Responsive design for cards */
