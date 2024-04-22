@@ -16,7 +16,7 @@
     <!-- Full-width Navigation Bar -->
     <div class="container">
         <nav class="nav-search-bar d-flex flex-wrap justify-content-between align-items-center mt-2 mb-2">
-            <a href="/search" class="nav-item">
+            <a href="/" class="nav-item">
                 <img src="{{ url_for('static', filename='images/Swiftsell.jpeg') }}" alt="SwiftSell Logo" class="navbar-logo"/>
             </a>
             <ul class="navbar-nav me-auto">
@@ -35,7 +35,7 @@
             </ul>
            
             <!-- Search form with integrated categories dropdown -->
-            <form action="/search" method="get" class="search-section d-flex">
+            <form action="/" method="get" class="search-section d-flex">
                 <input type="text" placeholder="Search" name="search_query" value="{{ search_query }}" class="form-control me-2">
                 <select name="category" class="form-select me-2">
                     <option value="all" {% if category == 'all' or category == '' %}selected{% endif %}>Categories...</option>
@@ -60,7 +60,7 @@
                     <span> &nbsp; {{ number_of_results_shown }} of {{ total_results }} results{% if search_query %} for "{{ search_query }}"{% endif %}</span>
                 </div>
                 <div class="sort-section">
-                    <form action="/search" method="get" class="d-flex">
+                    <form action="/" method="get" class="d-flex">
                         <input type="hidden" name="search_query" value="{{ search_query }}">
                         <input type="hidden" name="category" value="{{ category }}">
                         <label for="sortby" class="form-label">Sort by:</label>

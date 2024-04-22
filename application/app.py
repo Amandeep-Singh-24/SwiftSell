@@ -14,7 +14,7 @@ db_config = {
     'database': 'swiftselldb'
 }
 
-@app.route('/search', methods=['GET'])
+@app.route('/', methods=['GET'])
 def search():
     conn = None
     cursor = None
@@ -94,9 +94,9 @@ def search():
                            sort_by=sort_by)
 
     
-@app.route('/')
-def home():
-    return render_template('home.html')
+# @app.route('/')
+# def home():
+#     return render_template('home.html')
 
 @app.route('/about/amandeepsingh')
 def about_amandeepsingh():
