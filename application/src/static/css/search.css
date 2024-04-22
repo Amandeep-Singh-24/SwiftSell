@@ -4,27 +4,27 @@
 *::before,
 *::after {
     box-sizing: border-box;
+    margin: 0px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* Small black header styling */
 .small-header {
     background-color: #000;
     color: #fff;
-    text-align: center;
+    text-align: left;
     padding: 10px 0;
     font-size: 14px;
-    margin-bottom: 0; /* No bottom margin */
+    border-bottom: 0; /* No bottom margin */
 }
 
 /* Full-width navigation bar adjustments */
 .nav-search-bar {
     background-color: white;
-    margin-bottom: 1px;
-    padding: 10px 15px;
     display: flex;
     justify-content: space-between; /* Space between nav items */
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 2px solid #ddd;
 }
 
 /* Navigation items styling */
@@ -49,6 +49,7 @@
     border: 1px solid #ccc;
     padding: 5px;
     border-radius: 5px;
+    width: 50pc;
 }
 
 /* Adjustments for the search input */
@@ -230,6 +231,46 @@
 .navbar-logo {
     height: 75px; /* or the height you want */
     width: auto; /* maintain aspect ratio */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: white; /* This is a placeholder color; change as needed */
+    color: black;
+    font-weight: bold;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9; /* Light grey background */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Box shadow for a nice effect */
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* This shows the dropdown on hover, remove if you want click-only */
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd; /* Light grey background on hover */
 }
 
 /* Responsive design for cards */

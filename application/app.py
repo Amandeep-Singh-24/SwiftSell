@@ -8,8 +8,8 @@ app = Flask(__name__,
 
 # Database connection info. Note that this is not a secure connection.
 db_config = {
-    'user': 'ubuntu',
-    'password': 'Aman2423!',
+    'user': 'root',
+    'password': '123456789',
     'host': '127.0.0.1',
     'database': 'swiftselldb'
 }
@@ -19,57 +19,76 @@ def search():
     conn = None
     cursor = None
     categories = []
+    search_results = []
+    recent_items = []
     try:
-        search_query = request.args.get('search_query', '')
-        category = request.args.get('category', 'all')
+        search_query = request.args.get('search_query', '').strip()
+        category = request.args.get('category', 'all').strip()
         sort_by = request.args.get('sort_by', None)
 
-        # Connect to the database
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
         
-        # Fetch categories
         cursor.execute("SELECT categories_id, category_name FROM categories")
         categories = cursor.fetchall()
 
-        # Construct SQL query for items based on search parameters
-        sql_query = "SELECT it.*, cat.category_name FROM items_for_sale it JOIN categories cat ON it.category_id = cat.categories_id WHERE it.live = 1"
+        # Sorting options
+        sort_options = {
+            'price_asc': 'it.price ASC',
+            'price_desc': 'it.price DESC',
+            'name_asc': 'it.title ASC',
+            'name_desc': 'it.title DESC'
+        }
+        sql_order_by = " ORDER BY it.listed_date DESC"  # Default sort
+        if sort_by in sort_options:
+            sql_order_by = f" ORDER BY {sort_options[sort_by]}"
+
+        # SQL query for items
+        sql_query = """
+            SELECT it.*, cat.category_name FROM items_for_sale it 
+            JOIN categories cat ON it.category_id = cat.categories_id 
+            WHERE it.live = 1
+        """
         query_params = []
+
         if search_query:
             sql_query += " AND (it.title LIKE %s OR it.description LIKE %s)"
-            query_params.extend(["%" + search_query + "%", "%" + search_query + "%"])
-        if category and category != 'all':
+            search_term = f"%{search_query}%"
+            query_params.extend([search_term, search_term])
+
+        if category != 'all':
             sql_query += " AND cat.categories_id = %s"
             query_params.append(category)
-        if sort_by == 'price_asc':
-            sql_query += " ORDER BY it.price ASC"
-        elif sort_by == 'price_desc':
-            sql_query += " ORDER BY it.price DESC"
-        elif sort_by == 'name_asc':
-            sql_query += " ORDER BY it.title ASC"
-        elif sort_by == 'name_desc':
-            sql_query += " ORDER BY it.title DESC"
 
+        sql_query += sql_order_by
 
-
-        # Execute query for items
         cursor.execute(sql_query, query_params)
         search_results = cursor.fetchall()
 
-        # Get total number of results
-        total_results = len(search_results)
+        # Also apply sorting to recently listed items if no search query is made
+        if not search_query and category == 'all':
+            cursor.execute("""
+                SELECT it.*, cat.category_name 
+                FROM items_for_sale it 
+                JOIN categories cat ON it.category_id = cat.categories_id 
+                WHERE it.live = 1
+                """ + sql_order_by + """
+                LIMIT 5
+            """)
+            recent_items = cursor.fetchall()
+
     finally:
         if cursor:
             cursor.close()
         if conn:
             conn.close()
 
-    # Pass data to template and render HTML
     return render_template('search_results.html',
                            search_results=search_results,
-                           categories=categories,  # Pass categories to the template
+                           recent_items=recent_items,
+                           categories=categories,
                            number_of_results_shown=len(search_results),
-                           total_results=total_results,
+                           total_results=len(search_results),
                            search_query=search_query,
                            category=category,
                            sort_by=sort_by)
