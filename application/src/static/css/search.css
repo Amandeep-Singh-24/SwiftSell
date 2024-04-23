@@ -8,24 +8,8 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-/* Small black header styling */
-.small-header {
-    background-color: #000;
-    color: #fff;
-    text-align: left;
-    padding: 10px 0;
-    font-size: 14px;
-    border-bottom: 0; /* No bottom margin */
-}
 
-/* Full-width navigation bar adjustments */
-.nav-search-bar {
-    background-color: white;
-    display: flex;
-    justify-content: space-between; /* Space between nav items */
-    align-items: center;
-    border-bottom: 2px solid #ddd;
-}
+
 
 /* Navigation items styling */
 .nav-item {
@@ -43,7 +27,6 @@
 
 /* Search form customization for inline display */
 .search-section {
-    display: flex;
     align-items: center;
     background-color: white;
     border: 1px solid #ccc;
@@ -54,7 +37,6 @@
 
 /* Adjustments for the search input */
 .search-section .form-control {
-    flex-grow: 1;
     border: none;
     padding: 5px 8px;
 }
@@ -76,28 +58,12 @@
     border-radius: 5px;
 }
 
-/* Cards layout for two items per row */
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start; /* This will take care of equal spacing around items */
-    align-items: flex-start;
-    gap: 10px; /* This adds space between the cards without the need for negative margins */
-}
-
-
 .card {
-    flex: 0 0 calc(50% - 20px); /* Adjust for gap, two per row */
-    display: flex;
-    justify-content: space-between; /* Distribute space between elements inside the card */
-    align-items: center; /* Align elements vertically */
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
+    /* No need for flex-basis or width properties; Bootstrap's columns will handle the width */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative; /* For absolute positioning of card-info */
-    border: 1px solid #dcdcdc; /* Light gray border */
-    margin: 7px;
+    border: 1px solid #dcdcdc;
+    margin-bottom: 30px; /* Or adjust as needed */
+    /* Remove any padding or margin that could affect the width */
 }
 
 .card:hover {
@@ -107,10 +73,7 @@
 .card-info {
     border-left: 2px solid #dcdcdc; /* Gray line to separate the price and button */
     padding: 50px;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: flex-end; /* Align items to the end (right side) */
     height: 100%; /* Take full height of the card */
 }
 
@@ -134,12 +97,12 @@
     margin-right: 20px; /* Add margin to separate image from text */
     height: 200px;
     width: 175px;
+    margin-top: 15px;
 }
 
 .card-body {
-    display: flex;
+    
     align-items: start; /* Align to the top */
-    flex-grow: 1; /* Allow the body to grow */
 }
 
 .card-title {
@@ -175,7 +138,6 @@
 }
 
 .results-sort-line {
-    display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
@@ -191,7 +153,6 @@
 
 /* Styling for the 'Sort by' dropdown and label */
 .sort-section {
-    display: flex;
     align-items: center;
 }
 
@@ -273,13 +234,103 @@
     background-color: #ddd; /* Light grey background on hover */
 }
 
+.container-fluid {
+    padding-right: var(--bs-gutter-x, 0.75rem);
+    padding-left: var(--bs-gutter-x, 0.75rem);
+    margin-right: auto;
+    margin-left: auto;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.img-fluid.rounded-start {
+    object-fit: cover; /* Adjust as necessary */
+    width: 15pc;
+    height: 15pc; /* Adjust or set a fixed height as necessary */
+    margin-top: 7px;
+}
+
+
+.card-body, .card-footer {
+    padding: 1rem;
+    flex-grow: 1; /* Make footer and body take up equal space */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+}
+
+.card-price {
+    font-weight: bold;
+    color: red; /* Or any other color */
+    margin-bottom: 1rem; /* Space between the price and the button */
+    display: block; /* Makes sure that h5 is a block-level element, allowing margin auto to center */
+    margin: auto; /* Vertical margins auto for vertical centering */
+}
+
+.contact-seller {
+    width: auto; /* Allows the button to size according to its content */
+    padding: 0.375rem 0.75rem; /* Bootstrap's default button padding */
+    display: inline-block; /* Allows margins to be applied */
+    width: auto; /* Resets the width to be only as wide as its content */
+    margin: auto; /* Horizontal margins auto for horizontal centering */
+    background-color: #ffffff; /* Sets the background to white */
+    border: 1px solid #000000; /* Adds a black border to replace the lost contrast */
+    color: #000000; /* Sets text color to black */
+}
+
+.border-start {
+    border-left: 1px solid #dee2e6; /* Bootstrap default border color */
+    /* If your cards are of equal height, this should extend the border for the full height */
+}
+
+.my-3 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Remove any border from the navbar itself */
+.navbar {
+    border-bottom: none; /* If there's a border set, remove it */
+}
+
+/* Remove any box-shadow from the navbar to get rid of any "thicker grey bar" */
+.navbar, .navbar-toggler {
+    box-shadow: none;
+}
+
+/* Set a thin grey border below the results bar */
+.results-sort-line {
+    border-bottom: 1px solid #dee2e6; /* Bootstrap's light grey color */
+}
+
+/* Ensure there is no extra padding or margin around the navbar that could be causing the effect */
+.navbar-brand, .navbar-nav .nav-link {
+    padding: 0; /* Adjust or remove padding as needed */
+}
+
+/* You may also need to adjust the margins if they are causing any unwanted space */
+.navbar-brand, .navbar-nav {
+    margin: 0; /* Adjust or remove margins as needed */
+}
+
+/* If there is a container or row around the navbar that has padding or a border, you may need to adjust that too */
+.container-fluid, .row {
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin if not needed */
+}
+
+.custom-search-btn {
+    background-color: black; 
+    color: #fff; 
+    border: none; 
+}
+
+/* Change background color for hover state */
+.custom-search-btn:hover {
+    background-color: #dcdcdc; 
+    color: #fff; 
+}
+
 /* Responsive design for cards */
 @media (max-width: 768px) {
-    .card {
-        flex-direction: column;
-        align-items: flex-start;
-        flex: 0 0 100%;
-    }
     .card-info {
         position: absolute;
         top: 20px; /* Same as card's padding */
@@ -291,7 +342,6 @@
         margin-bottom: 10px; /* Space below image on smaller screens */
     }
     .nav-search-bar {
-        flex-direction: column;
         align-items: stretch; /* Align items to stretch to full width */
     }
     
