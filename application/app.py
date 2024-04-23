@@ -118,5 +118,24 @@ def about_davedaly():
 def about_markusreyer():
     return render_template('about_markusreyer.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/post')
+def post():
+    return render_template('post.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/message')
+def message():
+    return render_template('message.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

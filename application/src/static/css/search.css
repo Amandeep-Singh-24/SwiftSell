@@ -8,9 +8,6 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-
-
-
 /* Navigation items styling */
 .nav-item {
     padding: 5px 10px;
@@ -122,19 +119,6 @@
     color: #d83a3a; /* Green color for price */
     font-size: 1.2em;
     margin-right: auto; /* Pushes the button to the right */
-}
-
-.contact-seller {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.contact-seller:hover {
-    background-color: #0056b3;
 }
 
 .results-sort-line {
@@ -263,6 +247,7 @@
     margin-bottom: 1rem; /* Space between the price and the button */
     display: block; /* Makes sure that h5 is a block-level element, allowing margin auto to center */
     margin: auto; /* Vertical margins auto for vertical centering */
+    padding-bottom: 7px;
 }
 
 .contact-seller {
@@ -271,9 +256,15 @@
     display: inline-block; /* Allows margins to be applied */
     width: auto; /* Resets the width to be only as wide as its content */
     margin: auto; /* Horizontal margins auto for horizontal centering */
-    background-color: #ffffff; /* Sets the background to white */
-    border: 1px solid #000000; /* Adds a black border to replace the lost contrast */
-    color: #000000; /* Sets text color to black */
+    background-color: black; /* Sets the background to white */
+    border: 1px solid white; /* Adds a black border to replace the lost contrast */
+    color: white; /* Sets text color to black */
+}
+
+.contact-seller:hover {
+    background-color: #dcdcdc; /* Grey background on hover */
+    color: black;              /* Change text color on hover */
+    border-color: #dcdcdc;     /* Optional: change border color on hover */
 }
 
 .border-start {

@@ -45,7 +45,7 @@
             </ul>
             
             <!-- Center-aligned items - Search bar -->
-            <form class="d-flex mx-auto" style="width: 25%;" action="/" method="get" onsubmit="return validateSearch()">
+            <form class="d-flex mx-auto" style="width: 30%;" action="/" method="get" onsubmit="return validateSearch()">
                 <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search_query" value="{{ search_query }}" style="flex-grow: 1;width: 200%;">
                 <select class="form-select" name="category">
                     <option value="all" {% if category == 'all' or category == '' %}selected{% endif %}>Categories...</option>
@@ -61,7 +61,10 @@
             <!-- Right-aligned items - Sell, Log In, Sign Up -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/sell">Sell an Item</a>
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/post">Sell an Item</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Log In</a>
@@ -140,7 +143,7 @@
                     <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
                         <div class="text-center">
                             <h5 class="card-price text-danger">${{ '%.2f'|format(item.price) }}</h5>
-                            <button class="btn btn-outline-primary contact-seller">Contact Seller</button>
+                            <a href="/message" class="btn btn-outline-primary contact-seller">Contact Seller</a>
                         </div>
                     </div>
                 </div>
@@ -152,9 +155,6 @@
     </div>
 </div>
 {% endif %}
-
-
-
 
 <!-- All Items or Search Results Section -->
 <div class="container-fluid mt-4">
@@ -176,7 +176,7 @@
                     <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
                         <div class="text-center">
                             <h5 class="card-price text-danger">${{ '%.2f'|format(item.price) }}</h5>
-                            <button class="btn btn-outline-primary contact-seller">Contact Seller</button>
+                            <a href="/message" class="btn btn-outline-primary contact-seller">Contact Seller</a>
                         </div>
                     </div>
                 </div>
