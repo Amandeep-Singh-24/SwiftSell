@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post an Item - SwiftSell</title>
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        background-color: #fff;
+        font-family: 'Open Sans', sans-serif;
+    }
+    .navbar {
+        background-color: #f8f9fa;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .navbar-brand, .nav-link {
+        color: #333;
+    }
+    .navbar .btn {
+        border-radius: 20px;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease;
+    }
+    .navbar .btn-black {
+        background-color: #333;
+        color: white;
+    }
+    .navbar .btn-black:hover {
+        background-color: #555;
+    }
+    .content-container {
+        display: flex;
+        justify-content: center;
+        padding-top: 2%;
+        padding-bottom: 5%;
+    }
+    .post-item-section {
+        background-color: #f7f7f7;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        max-width: 800px;
+        width: 100%;
+    }
+    .post-item-section h2 {
+        color: #333;
+        margin-bottom: 30px;
+    }
+    .form-group {
+        margin-bottom: 25px;
+    }
+    .form-control, .form-control-file {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+    }
+    .form-control::placeholder {
+        color: #999;
+    }
+    .btn {
+        border-radius: 25px;
+        padding: 10px 0;
+        font-weight: 700;
+        transition: all 0.3s ease;
+    }
+    .btn-cancel {
+        background-color: #bbb;
+        color: white;
+        margin-right: 10px;
+    }
+    .btn-cancel:hover {
+        background-color: #a0a0a0;
+    }
+    .btn-publish {
+        background-color: #5cb85c;
+        color: white;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .btn-publish:hover {
+        background-color: #4cae4c;
+    }
+    .form-text {
+        display: block;
+        margin-top: 10px;
+    }
+    .form-row .col {
+        padding-right: 5px;
+    }
+    .form-row .col:last-child {
+        padding-left: 5px;
+    }
+    .btn-block {
+        display: block;
+        width: 100%;
+    }
+</style>
+</head>
+<body>
+
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="#">SwiftSell</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="btn btn-black" href="#">Sell an Item</a>
+      </li>
+      <li class="nav-item">
+        <a class="btn btn-outline-black" href="#">Dashboard</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Content container -->
+<div class="container-fluid content-container">
+    <!-- Post Item Section -->
+    <div class="post-item-section">
+        <h2>Post An Item</h2>
+        <form>
+            <!-- Photo upload section -->
+            <div class="form-group">
+                <label for="photoUpload">Add Photos</label>
+                <input type="file" class="form-control-file" id="photoUpload" multiple>
+                <small class="form-text text-muted">Pick 2 to 3 photos, include pictures with different angles and details.</small>
+            </div>
+            <!-- Item details -->
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Title">
+            </div>
+            <div class="form-group">
+                <select class="form-control">
+                  <option selected>Choose Category</option>
+                  <option>Electronics</option>
+                  <option>Clothing</option>
+                  <option>Furniture</option>
+                  <!-- Add other categories as needed -->
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Price">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" placeholder="Description" rows="3"></textarea>
+            </div>
+            <!-- Buttons -->
+            <div class="form-row">
+                <div class="col-6 pr-2">
+                    <button type="button" class="btn btn-cancel btn-block">Cancel</button>
+                </div>
+                <div class="col-6 pl-2">
+                    <button type="submit" class="btn btn-publish btn-block">Publish</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
