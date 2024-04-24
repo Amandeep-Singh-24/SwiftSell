@@ -10,7 +10,7 @@
             {% if search_query %}
                 <span> &nbsp; {{ number_of_results_shown }} of {{ total_results }} results for "{{ search_query }}"</span>
             {% elif category != 'all' %}
-            <span> &nbsp; {{ number_of_results_shown }} of {{ total_results }} results for "{{ category_names.get(category, 'Unknown Category') }}"</span>
+                <span> &nbsp; {{ number_of_results_shown }} of {{ total_results }} results for "{{ category_names.get(category, 'Unknown Category') }}"</span>
             {% else %}
                 <span> &nbsp; Over {{ total_items_count }} items available</span>
             {% endif %}
@@ -76,7 +76,7 @@
 {% endif %}
 
 <!-- All Items or Search Results Section -->
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4 px-4">
     <h2> &nbsp; {{ 'Search Results' if search_query else 'All Items' }}</h2>
     <div class="row row-cols-1 row-cols-lg-2 g-4">
         {% for item in search_results %}

@@ -1,28 +1,34 @@
+/* Container for the authentication form */
 .auth-container {
     padding: 20px;
     max-width: 400px;
     margin: auto;
-    margin-top: 50px; /* Center vertically or adjust as needed */
+    margin-top: 50px;
 }
 
+/* Authentication section */
 .auth-section {
+    max-width: 450px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
     background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
+/* Heading inside the authentication section */
 .auth-section h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* Form controls */
 .auth-section .form-control {
     margin-bottom: 15px;
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 
+/* Primary button */
 .auth-section .btn-black {
     background-color: #000 !important;
     color: #fff !important;
@@ -31,38 +37,43 @@
     border-radius: 5px !important;
 }
 
+/* Checkbox styles */
 .auth-section .checkbox {
     margin-bottom: 20px;
 }
 
+/* Checkbox input */
 .auth-section .checkbox input {
     margin-right: 5px;
 }
 
+/* Checkbox anchor tag */
 .auth-section .checkbox a {
     text-decoration: underline;
 }
 
+/* Primary button */
 .btn-primary {
     color: white;
     background-color: black;
     margin-top: 8px;
 }
 
-.btn-primary:hover{
+/* Hover styles for the primary button */
+.btn-primary:hover {
     color: #dcdcdc;
 }
 
 /* Footer styles */
 .footer {
-    position: fixed; /* Fixed position */
+    position: fixed;
     left: 0;
-    bottom: 0; /* Align to bottom */
-    width: 100%; /* Full width */
-    background-color: #fff; /* Footer background */
-    color: #333; /* Footer text color */
-    text-align: center; /* Center the text */
-    padding: 1rem 0; /* Padding for top and bottom */
-    box-shadow: 0 -2px 4px rgba(0,0,0,0.1); /* Shadow at the top of the footer */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typography */
-  }
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    color: #333;
+    text-align: center;
+    padding: 1rem 0;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

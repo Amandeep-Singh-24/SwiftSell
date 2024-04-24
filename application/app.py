@@ -76,7 +76,7 @@ def search():
                 JOIN categories cat ON it.category_id = cat.categories_id 
                 WHERE it.live = 1
                 """ + sql_order_by + """
-                LIMIT 5
+                LIMIT 6
             """)
             recent_items = cursor.fetchall()
             
