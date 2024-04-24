@@ -1,0 +1,41 @@
+/* Custom styles for the message section */
+.message-section {
+    padding: 50px; /* Increased padding */
+    margin-top: 100px; /* 100px top margin */
+    font-size: 1.2rem; /* Increased font size */
+    max-width: 800px; /* Adjust maximum width as needed */
+    margin-left: auto; /* Center the container horizontally */
+    margin-right: auto; /* Center the container horizontally */
+
+}
+
+.form-control{
+    border-radius: 5px;
+    font-size: 1.15rem; /* Increased font size */
+}
+
+.form-group {
+    margin-bottom: 10px; /* Increased margin between form elements */
+}
+
+/* Increased size for the message box */
+textarea.form-control {
+    height: 200px; /* Adjust height as needed */
+    width: 100%; /* Make the text box wider */
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+/* Custom styles for the Send Message button */
+.btn-send-message {
+    background-color: black !important; /* Button background color */
+    color: #fff; /* Button text color */
+    border: none; /* Remove button border */
+    padding: 10px 10px; /* Adjust button padding */
+    font-size: 1.2rem; /* Adjust button font size */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.btn-send-message:hover {
+    background-color: #dcdcdc !important; /* Button background color on hover */
+}

@@ -1,102 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Results - SwiftSell</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
-</head>
-<body>
-    <!-- Small black header -->
-    <div class="bg-dark text-light text-center py-2">
-        Software Engineering Class SFSU | Section 03 | Team 4 | Spring 2024
-    </div>
+{% extends 'base_navbar.html' %}
 
-    <!-- Full-width Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand" href="/">
-            <img src="{{ url_for('static', filename='images/Swiftsell.jpeg') }}" alt="SwiftSell Logo" class="navbar-logo"/>
-        </a>
-        
-        <!-- Toggle button for mobile view -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+{% block title %}Search Results - SwiftSell{% endblock %}
 
-        <!-- Navbar content -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Left-aligned items - Learn About Us -->
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Learn About Us
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/about/amandeepsingh">Amandeep Singh</a></li>
-                        <li><a class="dropdown-item" href="/about/aymanearfaoui">Aymane Arfaoui</a></li>
-                        <li><a class="dropdown-item" href="/about/alexisalvarez">Alexis Alvarez</a></li>
-                        <li><a class="dropdown-item" href="/about/davedaly">Dave Daly</a></li>
-                        <li><a class="dropdown-item" href="/about/markusreyer">Markus Reyer</a></li>
-                    </ul>
-                </li>
-            </ul>
-            
-            <!-- Center-aligned items - Search bar -->
-            <form class="d-flex mx-auto" style="width: 30%;" action="/" method="get" onsubmit="return validateSearch()">
-                <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search_query" value="{{ search_query }}" style="flex-grow: 1;width: 200%;">
-                <select class="form-select" name="category">
-                    <option value="all" {% if category == 'all' or category == '' %}selected{% endif %}>Categories...</option>
-                    {% for cat in categories %}
-                    <option value="{{ cat.categories_id }}" {% if cat.categories_id|string == category|string %}selected{% endif %}>
-                        {{ cat.category_name }}
-                    </option>
-                    {% endfor %}
-                </select>
-                <button class="btn custom-search-btn" type="submit">Search</button>
-            </form>
-
-            <!-- Right-aligned items - Sell, Log In, Sign Up -->
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/post">Sell an Item</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Log In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/signup">Sign Up</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-    <!-- Modal for displaying character limit warning -->
-    <div class="modal fade" id="charLimitModal" tabindex="-1" aria-labelledby="charLimitModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="charLimitModalLabel">Character Limit Exceeded</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Your search query cannot exceed 40 characters.
-                </div>
-            </div>
-        </div>
-    </div>
-
+{% block content %}
     <!-- Results count and sort by section -->
     <div class="container-fluid">
         <div class="results-sort-line d-flex justify-content-between align-items-center py-2 border-bottom">
             <div>
-                <span> &nbsp; {{ number_of_results_shown }} of {{ total_results }} results{% if search_query %} for "{{ search_query }}"{% endif %}</span>
+            {% if search_query %}
+                <span> &nbsp; {{ number_of_results_shown }} of {{ total_results }} results for "{{ search_query }}"</span>
+            {% elif category != 'all' %}
+            <span> &nbsp; {{ number_of_results_shown }} of {{ total_results }} results for "{{ category_names.get(category, 'Unknown Category') }}"</span>
+            {% else %}
+                <span> &nbsp; Over {{ total_items_count }} items available</span>
+            {% endif %}
             </div>
             <!-- Sort by section -->
         <div class="d-flex align-items-center">
@@ -116,14 +33,16 @@
     </div>
 </div>
 
-    <!-- Intro Section -->
-    <div class="container-fluid mt-4 text-center">
-        <h2>Welcome to SwiftSell</h2>
-        <p>SwiftSell is a community-driven marketplace tailored for SFSU students, faculty, and staff. Discover a wide range of used items, from textbooks to tech, all sold directly by students like you. In addition to tangible goods, SwiftSell is your go-to platform for finding student-provided services, including tutoring sessions, delivery services, and more. Connect with sellers directly to negotiate, trade, or purchase — all within the SFSU community.</p>
-    </div>
+    <!-- Intro Section - This will only show when there's no search_query -->
+    {% if not search_query and category == 'all' %}
+        <div class="container-fluid mt-4 text-center">
+            <h2>Welcome to SwiftSell</h2>
+            <p>SwiftSell is a community-driven marketplace tailored for SFSU students, faculty, and staff. Discover a wide range of used items, from textbooks to tech, all sold directly by students like you. In addition to tangible goods, SwiftSell is your go-to platform for finding student-provided services, including tutoring sessions, delivery services, and more. Connect with sellers directly to negotiate, trade, or purchase — all within the SFSU community.</p>
+        </div>
+    {% endif %}
 
 <!-- Recently Listed Items Section -->
-{% if not search_query %}
+{% if not search_query and category == 'all' %}
 <div class="container-fluid mt-4 px-4">
     <h2>Recently Listed Items</h2>
     <div class="row row-cols-1 row-cols-lg-2 g-4">
@@ -187,22 +106,4 @@
         {% endfor %}
     </div>
 </div>
-
-
-
-    <!-- Bootstrap JavaScript bundle for interactive elements -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script>
-        function validateSearch() {
-            var input = document.querySelector('input[name="search_query"]');
-            if (input.value.length > 40) {
-                var charLimitModal = new bootstrap.Modal(document.getElementById('charLimitModal'));
-                charLimitModal.show();
-                return false;
-            }
-            return true;
-        }
-        document.querySelector('form.search-section').addEventListener('submit', validateSearch);
-    </script>
-</body>
-</html>
+{% endblock %}

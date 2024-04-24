@@ -21,6 +21,8 @@ def search():
     categories = []
     search_results = []
     recent_items = []
+    total_items_count = 0
+    category_names = {}
     try:
         search_query = request.args.get('search_query', '').strip()
         category = request.args.get('category', 'all').strip()
@@ -31,7 +33,8 @@ def search():
         
         cursor.execute("SELECT categories_id, category_name FROM categories")
         categories = cursor.fetchall()
-
+        category_names = {cat['categories_id']: cat['category_name'] for cat in categories}
+    
         # Sorting options
         sort_options = {
             'price_asc': 'it.price ASC',
@@ -76,6 +79,9 @@ def search():
                 LIMIT 5
             """)
             recent_items = cursor.fetchall()
+            
+        # Compute total visible items
+        total_items_count = len(search_results) + len(recent_items)
 
     finally:
         if cursor:
@@ -87,9 +93,12 @@ def search():
                            search_results=search_results,
                            recent_items=recent_items,
                            categories=categories,
+                           category_names = category_names,
                            number_of_results_shown=len(search_results),
                            total_results=len(search_results),
+                           total_items_count=total_items_count,
                            search_query=search_query,
+                           
                            category=category,
                            sort_by=sort_by)
 

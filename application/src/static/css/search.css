@@ -320,6 +320,20 @@
     color: #fff; 
 }
 
+/* Footer styles */
+.footer {
+    position: fixed; /* Fixed position */
+    left: 0;
+    bottom: 0; /* Align to bottom */
+    width: 100%; /* Full width */
+    background-color: #fff; /* Footer background */
+    color: #333; /* Footer text color */
+    text-align: center; /* Center the text */
+    padding: 1rem 0; /* Padding for top and bottom */
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1); /* Shadow at the top of the footer */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typography */
+  }
+
 /* Responsive design for cards */
 @media (max-width: 768px) {
     .card-info {
