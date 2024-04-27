@@ -39,3 +39,23 @@ textarea.form-control {
 .btn-send-message:hover {
     background-color: #dcdcdc !important; /* Button background color on hover */
 }
+
+.btn-cancel {
+    background-color: #bbb !important;
+    color: white !important;
+    border: none; /* Remove button border */
+    padding: 10px 10px; /* Adjust button padding */
+    font-size: 1.2rem; /* Adjust button font size */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.btn-cancel:hover {
+    background-color: #dcdcdc !important; /* Button background color on hover */
+}
+
+.button-container {
+    display: flex; /* Use flexbox layout */
+}
+.button-container button {
+    margin-right: 10px; /* Add margin between buttons */
+}
