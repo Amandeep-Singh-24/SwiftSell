@@ -162,6 +162,9 @@ def signup():
         # Create variables for the user's inputs (username and password), as well as the list of users with that username (should be nobody).
         username = request.form.get("username")
         password = request.form.get("password")
+        first_name = request.form.get("first_name")
+        last_name = request.form.get("last_name")
+        email = request.form.get("email")
         conn = mysql.connector.connect(**db_config)
         duplicated = conn.execute("SELECT * FROM registered_user WHERE username =?", username)
 
@@ -171,7 +174,7 @@ def signup():
 
         # Hash the password and store username and hashed password in the registered_user database
         hashed = generate_password_hash(password)
-        conn.execute("INSERT INTO registered_user (username, password) VALUES (?, ?)", username, hashed)
+        conn.execute("INSERT INTO registered_user (username, password, first_name, last_name, email) VALUES (?, ?, ?, ?, ?)", username, hashed, first_name, last_name, email)
         return redirect("/signup")
     else:
         return render_template('signup.html')
