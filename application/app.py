@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, redirect, request, session
 import mysql.connector
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__,
             template_folder='templates',
@@ -129,10 +130,51 @@ def about_markusreyer():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    # Forget any current session user_id
+    session.clear()
+
+    if request.method == "POST":
+
+        # Ensure username was submitted
+        if not request.form.get("username") or not request.form.get("password"):
+            return render_template("login.html")
+
+        # Query database for username
+        conn = mysql.connector.connect(**db_config)
+        rows = conn.execute("SELECT * FROM registered_user WHERE username = ?", request.form.get("username"))
+
+        # Ensure username exists and password is correct
+        if len(rows) != 1 or not check_password_hash(rows[0]["password"], request.form.get("password")):
+            return render_template("login.html")
+
+        # Remember which user has logged in and redirect to home
+        session["user_id"] = rows[0]["id"]
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("login.html")
+
 @app.route('/signup')
 def signup():
-    return render_template('signup.html')
+    if request.method == "POST":
+
+        # Create variables for the user's inputs (username and password), as well as the list of users with that username (should be nobody).
+        username = request.form.get("username")
+        password = request.form.get("password")
+        conn = mysql.connector.connect(**db_config)
+        duplicated = conn.execute("SELECT * FROM registered_user WHERE username =?", username)
+
+        # Make sure the user typed in a username and password, and don't let the user reuse a username
+        if not username or not password or len(duplicated) != 0:
+            return render_template("signup.html")
+
+        # Hash the password and store username and hashed password in the registered_user database
+        hashed = generate_password_hash(password)
+        conn.execute("INSERT INTO registered_user (username, password) VALUES (?, ?)", username, hashed)
+        return redirect("/signup")
+    else:
+        return render_template('signup.html')
 
 @app.route('/post')
 def post():
