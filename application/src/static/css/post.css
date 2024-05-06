@@ -1,0 +1,148 @@
+body, html {
+    height: 100% !important;
+    margin: 0 !important;
+    background-color: #fff !important;
+    font-family: 'Open Sans', sans-serif;
+}
+.content-container {
+    display: flex !important;
+    justify-content: center !important;
+    padding-top: 2% !important;
+    padding-bottom: 5% !important; 
+}
+.post-section {
+    background-color: white !important;
+    padding: 40px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important;
+    max-width: 960px !important; 
+    min-width: 600px !important; 
+    width: 100% !important; 
+    margin: auto !important; /* Center the section if it's not full width */
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Ensure form controls take full width */
+.form-control, .form-select, .btn-block {
+    width: 100%; /* Set the width to 100% of their parent element */
+    margin-bottom: 15px; /* Add some space at the bottom */
+}
+
+/* Optionally, you can adjust the max-width for form controls if needed */
+.form-control, .form-select {
+    max-width: none;
+}
+
+/* Adjust button sizes and alignment */
+.form-row .col {
+    flex: 1 !important; /* Allows the buttons to fill the row equally */
+}
+
+/* Adjust the button width within their columns */
+.btn-block {
+    width: auto !important; /* Or 100% if you want them to take the full width */
+}
+
+
+.post-section h2 {
+    color: #333 !important;
+    margin-bottom: 30px !important;
+}
+.form-group {
+    margin-bottom: 25px !important;
+}
+
+.form-control::placeholder {
+    color: #999;
+}
+.btn {
+    padding: 0px;
+    transition: all 0.3s ease;
+    height: 37px;
+    width: 50%;
+}
+.btn-cancel {
+    background-color: black !important;
+    color: white !important;
+}
+.btn-cancel:hover {
+    background-color: #a0a0a0 !important;
+}
+.btn-publish {
+    background-color: #5cb85c !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+}
+.btn-publish:hover {
+    background-color: #4cae4c !important;
+}
+.form-text {
+    display: block !important;
+    margin-top: 10px !important;
+}
+.form-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 10px; /* Spacing between buttons */
+}
+.form-row .col {
+    flex: 1 !important; /* Each button will take equal width */
+}
+.btn-block {
+    width: 100% !important;
+}
+.nav-tabs .nav-link.active {
+    color: #fff !important;
+    background-color: black !important;
+    border-color: #333 #333 #f7f7f7 !important;
+}
+.tab-content {
+    padding-top: 20px !important; /* Space between tabs and content */
+    padding-left: -100px !important;
+}
+
+/* Custom styles for the message section */
+.message-section {
+    padding: 50px !important; /* Increased padding */
+    margin-top: 100px !important; /* 100px top margin */
+    font-size: 1.2rem !important; /* Increased font size */
+    max-width: 800px !important; /* Adjust maximum width as needed */
+    margin-left: auto !important; /* Center the container horizontally */
+    margin-right: auto !important; /* Center the container horizontally */
+
+}
+
+.form-group {
+    margin-bottom: 10px !important; /* Increased margin between form elements */
+}
+
+/* Increased size for the message box */
+textarea.form-control {
+    height: 200px !important; /* Adjust height as needed */
+    width: 100% !important; /* Make the text box wider */
+    margin-top: 10px !important;
+    border-radius: 10px !important;
+}
+
+/* Custom styles for the Send Message button */
+.btn-send-message {
+    background-color: #007bff !important; /* Button background color */
+    color: #fff !important; /* Button text color */
+    border: none !important; /* Remove button border */
+    padding: 10px 10px !important; /* Adjust button padding */
+    font-size: 1.2rem !important; /* Adjust button font size */
+    border-radius: 5px !important; /* Rounded corners */
+}
+
+.btn-send-message:hover {
+    background-color: #0056b3 !important; /* Button background color on hover */
+}
+
+#post-service-tab{
+    color: black;
+}
+
+#post-item-tab{
+    color: black;
+}

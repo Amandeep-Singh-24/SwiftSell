@@ -4,27 +4,8 @@
 *::before,
 *::after {
     box-sizing: border-box;
-}
-
-/* Small black header styling */
-.small-header {
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    font-size: 14px;
-    margin-bottom: 0; /* No bottom margin */
-}
-
-/* Full-width navigation bar adjustments */
-.nav-search-bar {
-    background-color: white;
-    margin-bottom: 1px;
-    padding: 10px 15px;
-    display: flex;
-    justify-content: space-between; /* Space between nav items */
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 0px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* Navigation items styling */
@@ -43,17 +24,16 @@
 
 /* Search form customization for inline display */
 .search-section {
-    display: flex;
     align-items: center;
     background-color: white;
     border: 1px solid #ccc;
     padding: 5px;
     border-radius: 5px;
+    width: 50pc;
 }
 
 /* Adjustments for the search input */
 .search-section .form-control {
-    flex-grow: 1;
     border: none;
     padding: 5px 8px;
 }
@@ -75,28 +55,12 @@
     border-radius: 5px;
 }
 
-/* Cards layout for two items per row */
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start; /* This will take care of equal spacing around items */
-    align-items: flex-start;
-    gap: 10px; /* This adds space between the cards without the need for negative margins */
-}
-
-
 .card {
-    flex: 0 0 calc(50% - 20px); /* Adjust for gap, two per row */
-    display: flex;
-    justify-content: space-between; /* Distribute space between elements inside the card */
-    align-items: center; /* Align elements vertically */
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
+    /* No need for flex-basis or width properties; Bootstrap's columns will handle the width */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative; /* For absolute positioning of card-info */
-    border: 1px solid #dcdcdc; /* Light gray border */
-    margin: 7px;
+    border: 1px solid #dcdcdc;
+    margin-bottom: 30px; /* Or adjust as needed */
+    /* Remove any padding or margin that could affect the width */
 }
 
 .card:hover {
@@ -106,10 +70,7 @@
 .card-info {
     border-left: 2px solid #dcdcdc; /* Gray line to separate the price and button */
     padding: 50px;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: flex-end; /* Align items to the end (right side) */
     height: 100%; /* Take full height of the card */
 }
 
@@ -133,12 +94,7 @@
     margin-right: 20px; /* Add margin to separate image from text */
     height: 200px;
     width: 175px;
-}
-
-.card-body {
-    display: flex;
-    align-items: start; /* Align to the top */
-    flex-grow: 1; /* Allow the body to grow */
+    margin-top: 15px;
 }
 
 .card-title {
@@ -152,29 +108,8 @@
     margin-bottom: 1em;
 }
 
-/* Adjust the price to be more prominent */
-.card-price {
-    font-weight: bold;
-    color: #d83a3a; /* Green color for price */
-    font-size: 1.2em;
-    margin-right: auto; /* Pushes the button to the right */
-}
-
-.contact-seller {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.contact-seller:hover {
-    background-color: #0056b3;
-}
 
 .results-sort-line {
-    display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
@@ -190,7 +125,6 @@
 
 /* Styling for the 'Sort by' dropdown and label */
 .sort-section {
-    display: flex;
     align-items: center;
 }
 
@@ -232,13 +166,164 @@
     width: auto; /* maintain aspect ratio */
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: white; /* This is a placeholder color; change as needed */
+    color: black;
+    font-weight: bold;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9; /* Light grey background */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Box shadow for a nice effect */
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* This shows the dropdown on hover, remove if you want click-only */
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd; /* Light grey background on hover */
+}
+
+.container-fluid {
+    padding-right: var(--bs-gutter-x, 0.75rem);
+    padding-left: var(--bs-gutter-x, 0.75rem);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.img-fluid.rounded-start {
+    object-fit: cover; /* Adjust as necessary */
+    width: 15pc;
+    height: 15pc; /* Adjust or set a fixed height as necessary */
+    margin-top: 7px;
+}
+
+
+.card-body, .card-footer {
+    padding: 1rem;
+    flex-grow: 1; /* Make footer and body take up equal space */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+}
+
+.card-price {
+    font-weight: bold;
+    color: red; 
+    margin-bottom: 1rem; /* Space between the price and the button */
+    display: block; /* Makes sure that h5 is a block-level element, allowing margin auto to center */
+    margin: auto; /* Vertical margins auto for vertical centering */
+    padding-bottom: 7px;
+}
+
+.contact-seller {
+    width: auto; /* Allows the button to size according to its content */
+    padding: 0.375rem 0.75rem; /* Bootstrap's default button padding */
+    display: inline-block; /* Allows margins to be applied */
+    width: auto; /* Resets the width to be only as wide as its content */
+    margin: auto; /* Horizontal margins auto for horizontal centering */
+    background-color: black; /* Sets the background to white */
+    border: 1px solid white; /* Adds a black border to replace the lost contrast */
+    color: white; /* Sets text color to black */
+}
+
+.contact-seller:hover {
+    background-color: #dcdcdc; /* Grey background on hover */
+    color: black;              /* Change text color on hover */
+    border-color: #dcdcdc;     /* Optional: change border color on hover */
+}
+
+.border-start {
+    border-left: 1px solid #dee2e6; /* Bootstrap default border color */
+    /* If your cards are of equal height, this should extend the border for the full height */
+}
+
+.my-3 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Remove any border from the navbar itself */
+.navbar {
+    border-bottom: none; /* If there's a border set, remove it */
+}
+
+/* Remove any box-shadow from the navbar to get rid of any "thicker grey bar" */
+.navbar, .navbar-toggler {
+    box-shadow: none;
+}
+
+/* Set a thin grey border below the results bar */
+.results-sort-line {
+    border-bottom: 1px solid #dee2e6; /* Bootstrap's light grey color */
+}
+
+/* Ensure there is no extra padding or margin around the navbar that could be causing the effect */
+.navbar-brand, .navbar-nav .nav-link {
+    padding: 0; /* Adjust or remove padding as needed */
+}
+
+/* You may also need to adjust the margins if they are causing any unwanted space */
+.navbar-brand, .navbar-nav {
+    margin: 0; /* Adjust or remove margins as needed */
+}
+
+/* If there is a container or row around the navbar that has padding or a border, you may need to adjust that too */
+.container-fluid, .row {
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin if not needed */
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.custom-search-btn {
+    background-color: black; 
+    color: #fff; 
+    border: none; 
+}
+
+/* Change background color for hover state */
+.custom-search-btn:hover {
+    background-color: #dcdcdc; 
+    color: #fff; 
+}
+
+/* Footer styles */
+.footer {
+    position: fixed; /* Fixed position */
+    left: 0;
+    bottom: 0; /* Align to bottom */
+    width: 100%; /* Full width */
+    background-color: #fff; /* Footer background */
+    color: #333; /* Footer text color */
+    text-align: center; /* Center the text */
+    padding: 1rem 0; /* Padding for top and bottom */
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1); /* Shadow at the top of the footer */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typography */
+  }
+
 /* Responsive design for cards */
 @media (max-width: 768px) {
-    .card {
-        flex-direction: column;
-        align-items: flex-start;
-        flex: 0 0 100%;
-    }
     .card-info {
         position: absolute;
         top: 20px; /* Same as card's padding */
@@ -250,7 +335,6 @@
         margin-bottom: 10px; /* Space below image on smaller screens */
     }
     .nav-search-bar {
-        flex-direction: column;
         align-items: stretch; /* Align items to stretch to full width */
     }
     

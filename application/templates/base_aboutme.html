@@ -1,32 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Title block allows for dynamic page titles -->
-    <title>{% block title %}Default Title{% endblock %}</title>
-    <!-- Using Bootstrap for styling -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Linking to a custom CSS file for additional styles -->
+{% extends "base_navbar.html" %}
+
+{% block title %}About Me - SwiftSell{% endblock %}
+
+{% block head_extra %}
+    <!-- Additional styles specific to the About Me page -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/aboutme_style.css') }}">
-    <!-- Head block for any additional elements needed in the head of child templates -->
-    {% block head %}{% endblock %}
-</head>
-<body>
-    <!-- Content block to be overridden by child templates with specific page content -->
-    {% block content %}
-    {% endblock %}
-    <!-- Including Bootstrap JavaScript for component interaction -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-    <!-- Scripts block for any additional JavaScript needed in child templates -->
-    {% block scripts %}{% endblock %}
-    {% block footer %}
-<!-- Default footer content goes here -->
-<footer class="footer">
-    <div class="container text-center">
-        &copy; 2024 SFSU Software Engineering Class - Team 4. All Rights Reserved.
-    </div>
-</footer>
 {% endblock %}
-</body>
-</html>
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>About Me</h1>
+        <p>Welcome to my personal page! Here you'll find information about my background, experience, and projects.</p>
+        <!-- More content here -->
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <!-- Custom footer for About Me page if necessary, or leave to inherit from base -->
+    <footer class="footer">
+        <div class="container text-center">
+            &copy; 2024 SFSU Software Engineering Class - Team 4. All Rights Reserved.
+        </div>
+    </footer>
+{% endblock %}
