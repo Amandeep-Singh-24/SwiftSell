@@ -15,6 +15,9 @@ db_config = {
     'database': 'swiftselldb'
 }
 
+# Setting the secret key to a random collection of characters. Tell no-one!
+app.secret_key = '2e2f346d432544a7bb0e08738ad38356' 
+
 @app.route('/', methods=['GET'])
 def search():
     conn = None
