@@ -3,7 +3,7 @@
     padding: 20px;
     max-width: 400px;
     margin: auto;
-    margin-top: 50px;
+    margin-top: -5px; /* Center vertically or adjust as needed */
 }
 
 /* Authentication section */
