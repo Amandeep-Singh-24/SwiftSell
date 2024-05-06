@@ -7,41 +7,21 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="wrapper">
-            <form class="form-signin" id="loginForm"> <!-- Added id="loginForm" for modal -->
-                <h2 class="form-signin-heading">Sign in Here</h2>
-                <h3 class="form-signin-subtext">Enter your SFSU email and password to sign in</h3>
-                <input type="text" class="form-control" name="username" placeholder="email@sfsu.edu" required="true" autofocus="" />
-                <input type="password" class="form-control" name="password" placeholder="*********" required="true"/>      
-                <label class="checkbox">
-                <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
-                </label>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button> 
-                <a class="create-account" href="/signup">Create Account</a>
-            </form>
-        </div>
-    </div>
+    <div class="wrapper">
+        <form class="form-signin">
+           <h2 class="form-signin-heading">Log in Here</h2>
+           <h3 class="form-signin-subtext">Enter your SFSU email and password to sign in</h3>
+           <input type="text" class="form-control" name="username" placeholder="email@sfsu.edu" required="" autofocus="" />
+           <input type="password" class="form-control" name="password" placeholder="*********" required=""/>      
+           <label class="checkbox">
+           <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+           </label>
+           <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button> 
+           <a class="create-account" href="/signup">Don't have an account? Sign up!</a>
+           <a class="create-account" href="#">Forgot password?</a>
 
-
-
-<!-- Modal for email requirement -->
-<div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="emailModalLabel">Invalid Email Address</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Please use an SFSU email address that ends with @sfsu.edu.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+        </form>
+     </div>
 
 <!-- Footer section -->
 <footer class="footer">
