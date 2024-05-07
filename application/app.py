@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, url_for
 import mysql.connector
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -132,56 +132,83 @@ def about_davedaly():
 def about_markusreyer():
     return render_template('about_markusreyer.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     # Forget any current session user_id
     session.clear()
 
     if request.method == "POST":
+        
+        username = request.form['username']
+        pwd = request.form['password']
 
-        # Ensure username was submitted
-        if not request.form.get("username") or not request.form.get("password"):
-            return render_template("login.html")
-
+         # Check if username and password are provided
+        if not username or not pwd:
+            return "Both username and password are required."
+        
         # Query database for username
         conn = mysql.connector.connect(**db_config)
-        rows = conn.execute("SELECT * FROM registered_user WHERE username = ?", request.form.get("username"))
+        cursor = conn.cursor(dictionary=True)
+        # executing query to see if entered user exists
+        cursor.execute("SELECT user_id, username, password FROM registered_user WHERE username = %s", (username,))
+        user = cursor.fetchone()
 
-        # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["password"], request.form.get("password")):
-            return render_template("login.html")
-
-        # Remember which user has logged in and redirect to home
-        session["user_id"] = rows[0]["id"]
-        return redirect("/")
+        if user:
+            stored_password_hash = user['password']
+            if check_password_hash(stored_password_hash, pwd):
+                # creating session variable for curr user's id (used for post item)
+                session['user_id'] = user['user_id']
+                return redirect(url_for('search'))  # Redirect to the home page
+            else:
+                return "Invalid password."
+        else:
+            return "User not found."
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == "POST":
-
-        # Create variables for the user's inputs (username and password), as well as the list of users with that username (should be nobody).
         username = request.form.get("username")
         password = request.form.get("password")
         first_name = request.form.get("first_name")
         last_name = request.form.get("last_name")
         email = request.form.get("email")
+        
+        if not username or not password:
+            return render_template("signup.html", error="Username and password are required.")
+
         conn = mysql.connector.connect(**db_config)
-        duplicated = conn.execute("SELECT * FROM registered_user WHERE username =?", username)
+        cursor = conn.cursor(dictionary=True)
 
-        # Make sure the user typed in a username and password, and don't let the user reuse a username
-        if not username or not password or len(duplicated) != 0:
-            return render_template("signup.html")
+        try:
+            # Check if username already exists
+            cursor.execute("SELECT * FROM registered_user WHERE username = %s", (username,))
+            if cursor.fetchone():
+                return render_template("signup.html", error="Username already exists.")
 
-        # Hash the password and store username and hashed password in the registered_user database
-        hashed = generate_password_hash(password)
-        conn.execute("INSERT INTO registered_user (username, password, first_name, last_name, email) VALUES (?, ?, ?, ?, ?)", username, hashed, first_name, last_name, email)
-        return redirect("/signup")
+            # Hash the password
+            hashed = generate_password_hash(password)
+
+            # Insert the new user
+            cursor.execute(
+                "INSERT INTO registered_user (username, password, first_name, last_name, email) VALUES (%s, %s, %s, %s, %s)",
+                (username, hashed, first_name, last_name, email)
+            )
+            conn.commit()  # Commit to save changes to the database
+
+            return redirect("/login")  # Redirect to login after successful signup
+        except mysql.connector.Error as err:
+            print("Error: {}".format(err))
+            return render_template("signup.html", error="Failed to register user.")
+        finally:
+            cursor.close()
+            conn.close()
     else:
         return render_template('signup.html')
+
 
 @app.route('/post')
 def post():
@@ -194,6 +221,39 @@ def dashboard():
 @app.route('/message')
 def message():
     return render_template('message.html')
+
+@app.route('/item/<int:item_id>')
+def item_details(item_id):
+    # Initialize the database connection and cursor
+    conn = None
+    cursor = None
+    try:
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+        
+        # Execute a query to fetch details of the specific item using its ID
+        cursor.execute("SELECT * FROM items_for_sale WHERE item_id = %s", (item_id,))
+        item = cursor.fetchone()
+        
+        # Check if the item exists
+        if item:
+            # Render an item detail template if the item is found
+            return render_template('item_details.html', item=item)
+        else:
+            # If no item is found, return a custom error page or a not found message
+            return f"Item with ID {item_id} not found.", 404
+    except Exception as e:
+        # Log exception if something goes wrong
+        app.logger.error(f"Error fetching item details: {e}")
+        return "An error occurred while fetching item details.", 500
+    finally:
+        # Ensure that the database cursor and connection are closed properly
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
