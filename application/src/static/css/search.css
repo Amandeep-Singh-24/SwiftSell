@@ -267,6 +267,19 @@
 /* Remove any border from the navbar itself */
 .navbar {
     border-bottom: none; /* If there's a border set, remove it */
+    background: #212529;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: white !important;
+}
+
+.navbar-light .navbar-brand {
+    color: white !important;
+}
+
+.navbar-light .navbar-toggler {
+    color: white !important;
 }
 
 /* Remove any box-shadow from the navbar to get rid of any "thicker grey bar" */
@@ -308,19 +321,29 @@
     color: #fff; 
 }
 
-/* Footer styles */
-.footer {
-    position: fixed; /* Fixed position */
-    left: 0;
-    bottom: 0; /* Align to bottom */
-    width: 100%; /* Full width */
-    background-color: #fff; /* Footer background */
-    color: #333; /* Footer text color */
-    text-align: center; /* Center the text */
-    padding: 1rem 0; /* Padding for top and bottom */
-    box-shadow: 0 -2px 4px rgba(0,0,0,0.1); /* Shadow at the top of the footer */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typography */
+
+
+
+  h2{
+    margin-bottom: 20px;
   }
+
+  .bg-dark {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
+    border-bottom: 1px solid white;
+  }
+
+.card-link a {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Inherits text color from parent */
+}
+.card-link a:hover {
+    text-decoration: none; /* Ensures no underline on hover */
+}
+.contact-seller {
+    text-decoration: none; /* Additional style to prevent underlining */
+}
 
 /* Responsive design for cards */
 @media (max-width: 768px) {
