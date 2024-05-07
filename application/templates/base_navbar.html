@@ -9,11 +9,13 @@
     {% block head_extra %}{% endblock %}
 </head>
 <body>
+    <!-- Small Header -->
     <div class="bg-dark text-light text-center py-2">
         SFSU Software Engineering Project CSC 648-848, Spring 2024. For Demonstration Only<br>
         | Section 03 | Team 4 |
     </div>
 
+    <!-- Create Navbar with logo and about me -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
@@ -22,6 +24,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+                <!-- About Me -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item dropdown">
@@ -35,6 +38,7 @@
                         </ul>
                     </li>
                 </ul>
+                    <!-- Search bar, categories, search submission -->
                 <form class="d-flex mx-auto" style="width: 30%;" action="/" method="get" onsubmit="return validateSearch()">
                     <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search_query" value="{{ search_query }}" style="flex-grow: 1;width: 200%;">
                     <select class="form-select" name="category">
@@ -47,6 +51,7 @@
                     </select>
                     <button class="btn custom-search-btn" type="submit">Search</button>
                 </form>
+                    <!-- All other links -->
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="/post">Sell an Item</a></li>
@@ -57,6 +62,7 @@
         </div>
     </nav>
 
+        <!-- Search Cannot Exceed 40 characters. -->
     <div class="modal fade" id="charLimitModal" tabindex="-1" aria-labelledby="charLimitModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

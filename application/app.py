@@ -15,6 +15,9 @@ db_config = {
     'database': 'swiftselldb'
 }
 
+# Setting the secret key to a random collection of characters. Tell no-one!
+app.secret_key = '2e2f346d432544a7bb0e08738ad38356' 
+
 @app.route('/', methods=['GET'])
 def search():
     conn = None
@@ -34,8 +37,9 @@ def search():
         
         cursor.execute("SELECT categories_id, category_name FROM categories")
         categories = cursor.fetchall()
-        category_names = {cat['categories_id']: cat['category_name'] for cat in categories}
-    
+        # Fetch categories and create a dictionary with string keys
+        category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+
         # Sorting options
         sort_options = {
             'price_asc': 'it.price ASC',
@@ -77,7 +81,7 @@ def search():
                 JOIN categories cat ON it.category_id = cat.categories_id 
                 WHERE it.live = 1
                 """ + sql_order_by + """
-                LIMIT 5
+                LIMIT 6
             """)
             recent_items = cursor.fetchall()
             

@@ -11,7 +11,7 @@ body, html {
     padding-bottom: 5% !important; 
 }
 .post-section {
-    background-color: #f7f7f7 !important;
+    background-color: white !important;
     padding: 40px !important;
     border-radius: 10px !important;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05) !important;
@@ -19,6 +19,7 @@ body, html {
     min-width: 600px !important; 
     width: 100% !important; 
     margin: auto !important; /* Center the section if it's not full width */
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
 /* Ensure form controls take full width */
@@ -61,7 +62,7 @@ body, html {
     width: 50%;
 }
 .btn-cancel {
-    background-color: #bbb !important;
+    background-color: black !important;
     color: white !important;
 }
 .btn-cancel:hover {
@@ -93,15 +94,13 @@ body, html {
 }
 .nav-tabs .nav-link.active {
     color: #fff !important;
-    background-color: #333 !important;
+    background-color: black !important;
     border-color: #333 #333 #f7f7f7 !important;
 }
 .tab-content {
     padding-top: 20px !important; /* Space between tabs and content */
     padding-left: -100px !important;
 }
-
-
 
 /* Custom styles for the message section */
 .message-section {
@@ -138,4 +137,12 @@ textarea.form-control {
 
 .btn-send-message:hover {
     background-color: #0056b3 !important; /* Button background color on hover */
+}
+
+#post-service-tab{
+    color: black;
+}
+
+#post-item-tab{
+    color: black;
 }

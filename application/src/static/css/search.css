@@ -97,11 +97,6 @@
     margin-top: 15px;
 }
 
-.card-body {
-    
-    align-items: start; /* Align to the top */
-}
-
 .card-title {
     font-size: 1.2em;
     margin-bottom: 0.5em;
@@ -113,13 +108,6 @@
     margin-bottom: 1em;
 }
 
-/* Adjust the price to be more prominent */
-.card-price {
-    font-weight: bold;
-    color: #d83a3a; /* Green color for price */
-    font-size: 1.2em;
-    margin-right: auto; /* Pushes the button to the right */
-}
 
 .results-sort-line {
     justify-content: space-between;
@@ -223,7 +211,6 @@
     padding-left: var(--bs-gutter-x, 0.75rem);
     margin-right: auto;
     margin-left: auto;
-    border-bottom: 1px solid #dcdcdc;
 }
 
 .img-fluid.rounded-start {
@@ -243,7 +230,7 @@
 
 .card-price {
     font-weight: bold;
-    color: red; /* Or any other color */
+    color: red; 
     margin-bottom: 1rem; /* Space between the price and the button */
     display: block; /* Makes sure that h5 is a block-level element, allowing margin auto to center */
     margin: auto; /* Vertical margins auto for vertical centering */
@@ -306,6 +293,7 @@
 .container-fluid, .row {
     padding: 0; /* Remove padding */
     margin: 0; /* Remove margin if not needed */
+    border-bottom: 1px solid #dcdcdc;
 }
 
 .custom-search-btn {
