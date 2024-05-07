@@ -13,7 +13,7 @@
 <!-- Recently Listed Items Section -->
 {% if not search_query and category == 'all' %}
 <div class="container-fluid mt-4">
-    <h2>Recently Listed Items</h2>
+    <h2> &nbsp; &nbsp; Recently Listed Items</h2>
     <div class="row row-cols-1 row-cols-lg-2 g-4">
         {% for item in recent_items %}
         <div class="col">
@@ -44,10 +44,11 @@
 </div>
 {% endif %}
 
-<!-- All Items or Search Results Section -->
+<!-- All Items or Search Results Section - Show sort and results count only when there's a search query or category selection -->
+{% if search_query or (category != 'all' and category != None) %}
 <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between">
-        <h2>{{ search_query if search_query else (category_names.get(category, 'All Items') if category != 'all' else 'All Items') }} - {{ total_results }} Items Listed {% if category != 'all' %} in {{ category_names.get(category, '') }}{% endif %}</h2>
+        <h2> &nbsp; &nbsp; {{ search_query if search_query else category_names.get(category, 'All Items') }} - {{ total_results }} Items Listed {% if category != 'all' %} in {{ category_names.get(category, '') }}{% endif %}</h2>
         <div class="d-flex align-items-center">
             <form action="/" method="get" class="d-flex">
                 <input type="hidden" name="search_query" value="{{ search_query }}">
@@ -91,6 +92,39 @@
         {% endfor %}
     </div>
 </div>
+{% else %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between">
+        <h2> &nbsp; &nbsp; All Items</h2>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
+        {% for item in search_results %}
+        <div class="col">
+            <div class="card h-100 clickable-card" data-href="{{ url_for('item_details', item_id=item.item_id) }}">
+                <div class="row g-0">
+                    <div class="col-md-4 d-flex align-items-center justify-content-center p-2">
+                        <img src="{{ url_for('static', filename=item.photo_path) }}" class="img-fluid rounded" alt="{{ item.title }}" style="object-fit: cover; max-height: 180px;">
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.title }}</h5>
+                            <p class="card-text">{{ item.description }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
+                        <div class="text-center">
+                            <h5 class="card-price text-danger">${{ '%.2f'|format(item.price) }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p>No items found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
@@ -107,8 +141,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const sellerButtons = document.querySelectorAll('.contact-seller');
     sellerButtons.forEach(button => {
         button.addEventListener('click', function(event) {
-            event.stopPropagation();  // Prevents the card's click event
-            window.open(button.getAttribute('href'), '_blank'); // Opens in a new tab
+            event.preventDefault(); // Prevent default action
+            event.stopPropagation(); // Stop event from bubbling up to the parent card
+            window.open(this.href, '_blank'); // Opens in a new tab
         });
     });
 });

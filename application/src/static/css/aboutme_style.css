@@ -93,11 +93,6 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typography */
   }
   
-  /* Ensure that the body content does not get hidden behind the footer */
-  body {
-    padding-bottom: 60px; /* Adjust this value based on the height of your footer */
-  }
-
   .card img{
     width: 100% !important;
   }

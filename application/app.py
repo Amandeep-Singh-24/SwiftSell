@@ -224,35 +224,25 @@ def message():
 
 @app.route('/item/<int:item_id>')
 def item_details(item_id):
-    # Initialize the database connection and cursor
-    conn = None
-    cursor = None
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
     try:
-        # Connect to the database
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor(dictionary=True)
-        
-        # Execute a query to fetch details of the specific item using its ID
-        cursor.execute("SELECT * FROM items_for_sale WHERE item_id = %s", (item_id,))
+        query = """
+        SELECT it.*, cat.category_name FROM items_for_sale it
+        JOIN categories cat ON it.category_id = cat.categories_id
+        WHERE it.item_id = %s;
+        """
+        cursor.execute(query, (item_id,))  # Note the comma to make it a tuple
         item = cursor.fetchone()
-        
-        # Check if the item exists
-        if item:
-            # Render an item detail template if the item is found
-            return render_template('item_details.html', item=item)
-        else:
-            # If no item is found, return a custom error page or a not found message
-            return f"Item with ID {item_id} not found.", 404
+        if not item:
+            return "Item not found", 404
+        return render_template('item_details.html', item=item)
     except Exception as e:
-        # Log exception if something goes wrong
-        app.logger.error(f"Error fetching item details: {e}")
-        return "An error occurred while fetching item details.", 500
+        print(f"SQL Error: {e}")
+        return "An error occurred", 500
     finally:
-        # Ensure that the database cursor and connection are closed properly
-        if cursor:
-            cursor.close()
-        if conn:
-            conn.close()
+        cursor.close()
+        conn.close()
 
 
 if __name__ == '__main__':

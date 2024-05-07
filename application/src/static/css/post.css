@@ -56,7 +56,6 @@ body, html {
     color: #999;
 }
 .btn {
-    padding: 0px;
     transition: all 0.3s ease;
     height: 37px;
     width: 50%;
@@ -77,6 +76,24 @@ body, html {
 .btn-publish:hover {
     background-color: #4cae4c !important;
 }
+
+.btn-secondary.active{
+    background-color: black;
+    border-color: white;
+}
+
+.btn-secondary.active:hover {
+    color: #fff;
+    background-color: #5c636a;
+    border-color: #565e64;
+  }
+
+.btn-secondary {
+    background-color: black;
+    border-color: white;
+    text-align: center;
+}
+
 .form-text {
     display: block !important;
     margin-top: 10px !important;

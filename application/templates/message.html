@@ -6,11 +6,7 @@
   href="{{ url_for('static', filename='css/message.css') }}"
 />
 
-<script>
-  function closeMessageTab() {
-    window.close(); // Close the current tab
-  }
-</script>
+
 {% endblock %} {% block content %}
 <!-- Section for sending a message -->
 <div class="message-section">
@@ -69,4 +65,11 @@
   </div>
 </div>
 
+{% endblock %}
+{% block scripts %}
+<script>
+  function closeMessageTab() {
+    window.close(); // Close the current tab
+  }
+</script>
 {% endblock %}
