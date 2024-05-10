@@ -165,7 +165,6 @@ def login():
             if check_password_hash(stored_password_hash, pwd):
                 # creating session variable for curr user's id (used for post item)
                 session['user_id'] = user['user_id']
-                print(session)
                 return redirect(url_for('search'))  # Redirect to the home page
             else:
                 return "Invalid password."
