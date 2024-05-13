@@ -10,6 +10,12 @@ app = Flask(__name__,
             static_folder='src/static',
             static_url_path='/static')
 
+# file path to store user images
+# Absolute path to the directory where images should be saved
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Absolute directory of this script
+app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'src', 'static', 'images')
+
+
 # Database connection info. Note that this is not a secure connection.
 db_config = {
     'user': 'root',
@@ -215,48 +221,82 @@ def signup():
 
 @app.route("/post", methods=["GET", "POST"])
 def post():
+    # Check if the user is logged in
+    if "user_id" not in session:
+        flash("You must be logged in to post an item.")
+        return redirect(url_for('login'))
+
+    # Get user ID from session
+    user_id = session['user_id']
+    print(user_id)
+    #check if user wants to post item for sale
     if request.method == 'POST':
-        if "user_id" not in session:
-            flash("You must be logged in to post an item.")
-            return redirect(url_for('login'))
-
-        user_id = session['user_id']
-        title = request.form.get('title')
-        description = request.form.get('description')
-        price = request.form.get('price')
-        category_id = request.form.get('category_id')
-        photo_path = request.files.get('photo_path')
-
-        if not all([title, description, price, category_id, photo_path]):
-            flash("All fields are required.")
-            return render_template('post.html')
-
-        # Process file upload
-        try:
-            pic_filename = secure_filename(photo_path.filename)
-            pic_name = f"{uuid.uuid4()}_{pic_filename}"
-            save_path = os.path.join(app.config['UPLOAD_FOLDER'], pic_name)
-            photo_path.save(save_path)
-
-            # Insert data into database
+        if request.form.get('action') == "item":
+            # Grabbing required form info for item
+            title = request.form.get('title')
+            description = request.form.get('description')
+            price = request.form.get('price')
+            category_id = request.form.get('category_id')
+            photo_path = request.files.get('photo_path')
+            # check user entered 
+            if not all([title, description, price, category_id, photo_path]):
+                flash("All fields are required!")
+                return render_template('post.html')
+            
+            # initializing db cursor
             conn = mysql.connector.connect(**db_config)
             cursor = conn.cursor()
-            cursor.execute("""
-                INSERT INTO items_for_sale (title, description, price, live, seller, category_id, photo_path, thumbnail)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (title, description, price, 0, user_id, category_id, pic_name, pic_name))
-            conn.commit()
-        except Exception as e:
-            flash(f"An error occurred: {e}")
-            return render_template('post.html'), 500
-        finally:
-            cursor.close()
-            conn.close()
 
-        flash("Item posted successfully! Awaiting approval.")
-        return redirect(url_for('dashboard'))
-    else:
-        return render_template('post.html')
+           
+            try:
+                # Process file upload
+                pic_filename = secure_filename(photo_path.filename)
+                pic_name = f"{uuid.uuid4()}_{pic_filename}"
+                save_path = os.path.join(app.config['UPLOAD_FOLDER'], pic_name)
+                photo_path.save(save_path)
+                db_path = f"images/{pic_name}"  # This will be the path stored in the DB
+
+                # Insert item data into database
+                cursor.execute("""
+                    INSERT INTO items_for_sale (title, description, price, live, seller, category_id, photo_path, thumbnail)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """, (title, description, price, 0, user_id, category_id, db_path, db_path))
+                conn.commit()
+                flash("Item posted successfully! Waiting for approval.")
+            except Exception as e:
+                flash(f"An error occurred: {e}")
+                return render_template('post.html'), 500
+            
+                
+        elif request.form.get('action') == "service":
+            #grab service info from user
+            try:
+                title = request.form.get('service_title')
+                description = request.form.get('service_description')
+                price = request.form.get('service_price')
+                if not all([title, description, price]):
+                    flash("All fields are required!")
+                    return render_template('post.html')
+                category_id = 4  # Assuming service category ID is fixed
+                conn = mysql.connector.connect(**db_config)
+                cursor = conn.cursor()
+                cursor.execute("""
+                    INSERT INTO items_for_sale (title, description, price, live, seller, category_id)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                """, (title, description, price, 0, user_id, category_id))
+                conn.commit()
+                flash("Service posted successfully! Waiting for approval.")
+            except Exception as e:
+                flash(f"An error occurred: {e}")
+                return render_template('post.html'), 500
+            
+        cursor.close()
+        conn.close()
+        # Redirect to a different page after successful submission
+        return redirect(url_for('post'))
+
+    # Render the post.html template for GET requests
+    return render_template('post.html')
 
 
 @app.route('/dashboard')
