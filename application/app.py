@@ -1,6 +1,9 @@
-from flask import Flask, render_template, redirect, request, session, url_for
+from flask import Flask, flash, render_template, redirect, request, session, url_for
 import mysql.connector
+import os
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
+import uuid as uuid
 
 app = Flask(__name__,
             template_folder='templates',
@@ -210,9 +213,51 @@ def signup():
         return render_template('signup.html')
 
 
-@app.route('/post')
+@app.route("/post", methods=["GET", "POST"])
 def post():
-    return render_template('post.html')
+    if request.method == 'POST':
+        if "user_id" not in session:
+            flash("You must be logged in to post an item.")
+            return redirect(url_for('login'))
+
+        user_id = session['user_id']
+        title = request.form.get('title')
+        description = request.form.get('description')
+        price = request.form.get('price')
+        category_id = request.form.get('category_id')
+        photo_path = request.files.get('photo_path')
+
+        if not all([title, description, price, category_id, photo_path]):
+            flash("All fields are required.")
+            return render_template('post.html')
+
+        # Process file upload
+        try:
+            pic_filename = secure_filename(photo_path.filename)
+            pic_name = f"{uuid.uuid4()}_{pic_filename}"
+            save_path = os.path.join(app.config['UPLOAD_FOLDER'], pic_name)
+            photo_path.save(save_path)
+
+            # Insert data into database
+            conn = mysql.connector.connect(**db_config)
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO items_for_sale (title, description, price, live, seller, category_id, photo_path, thumbnail)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (title, description, price, 0, user_id, category_id, pic_name, pic_name))
+            conn.commit()
+        except Exception as e:
+            flash(f"An error occurred: {e}")
+            return render_template('post.html'), 500
+        finally:
+            cursor.close()
+            conn.close()
+
+        flash("Item posted successfully! Awaiting approval.")
+        return redirect(url_for('dashboard'))
+    else:
+        return render_template('post.html')
+
 
 @app.route('/dashboard')
 def dashboard():
@@ -243,6 +288,12 @@ def item_details(item_id):
     finally:
         cursor.close()
         conn.close()
+        
+@app.route('/logout')
+def logout():
+    session.clear()  # Clears all data in the session
+    return redirect(url_for('search'))
+
 
 
 if __name__ == '__main__':

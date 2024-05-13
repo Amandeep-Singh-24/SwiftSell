@@ -8,66 +8,63 @@
 
 {% block content %}
 <div class="container-fluid content-container">
-  <div class="post-section">
-    <div class="row mb-4">
-      <div class="col-md-auto">
-        <h2>Post Your Listing</h2>
-      </div>
-      <div class="col-md-auto">
-        <div class="btn-group" role="group" aria-label="Post Type">
-          <button type="button" class="btn btn-secondary active" id="itemButton" onclick="toggleForm('item')">Sales</button>
-          <button type="button" class="btn btn-secondary" id="serviceButton" onclick="toggleForm('service')">Service</button>
+    <div class="post-section">
+        <div class="row mb-4">
+            <div class="col-md-auto">
+                <h2>Post Your Listing</h2>
+            </div>
+            <div class="col-md-auto">
+                <div class="btn-group" role="group" aria-label="Post Type">
+                    <button type="button" class="btn btn-secondary active" id="itemButton" onclick="toggleForm('item')">Sales</button>
+                    <button type="button" class="btn btn-secondary" id="serviceButton" onclick="toggleForm('service')">Service</button>
+                </div>
+            </div>
         </div>
-      </div>
+        <form method="POST" action="/post" enctype="multipart/form-data">
+            <!-- Item fields -->
+            <div id="itemFields">
+                <div class="form-group">
+                    <label for="photoUpload">Add Photos</label>
+                    <input type="file" class="form-control-file" id="photoUpload" name="photo_path" multiple />
+                    <small class="form-text text-muted">Pick 2 to 3 photos, include pictures with different angles and details.</small>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="title" placeholder="Title" />
+                    <select class="form-control" name="category_id">
+                        <option selected>Choose Category</option>
+                        <option value="1">Electronics</option>
+                        <option value="2">Clothing</option>
+                        <option value="3">Furniture</option>
+                    </select>
+                    <input type="text" class="form-control" name="price" placeholder="Price" />
+                    <textarea class="form-control" name="description" placeholder="Description" rows="3"></textarea>
+                </div>
+            </div>
+            <!-- Service fields -->
+            <div id="serviceFields" style="display: none;">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="service_title" placeholder="Service Title" />
+                    <select class="form-control" name="service_category_id">
+                        <option selected>Choose Service Category</option>
+                        <option value="4">Education</option>
+                        <option value="5">Home Repair</option>
+                        <option value="6">IT & Tech Support</option>
+                    </select>
+                    <input type="text" class="form-control" name="fee" placeholder="Fee" />
+                    <textarea class="form-control" name="service_description" placeholder="Service Description" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <button type="button" class="btn btn-cancel btn-block" onclick="window.history.back();">Cancel</button>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-publish btn-block">Submit</button>
+                </div>
+            </div>
+            <div>May take up to 24 hours to be approved</div>
+        </form>
     </div>
-    <form action="/post" enctype="multipart/form-data" id="postForm">
-      <!-- Item fields -->
-      <div id="itemFields">
-        <div class="form-group">
-          <label for="photoUpload">Add Photos</label>
-          <input type="file" class="form-control-file" id="photoUpload" multiple />
-          <small class="form-text text-muted">Pick 2 to 3 photos, include pictures with different angles and details.</small>
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Title" />
-          <select class="form-control">
-            <option selected>Choose Category</option>
-            <option>Electronics</option>
-            <option>Clothing</option>
-            <option>Furniture</option>
-            <!-- Add other categories as needed -->
-          </select>
-          <input type="text" class="form-control" placeholder="Price" />
-        </div>
-      </div>
-      <!-- Service fields -->
-      <div id="serviceFields" style="display: none;">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Service Title" />
-          <select class="form-control">
-            <option selected>Choose Service Category</option>
-            <option>Education</option>
-            <option>Home Repair</option>
-            <option>IT & Tech Support</option>
-            <!-- Add other categories as needed -->
-          </select>
-          <input type="text" class="form-control" placeholder="Fee" />
-        </div>
-      </div>
-      <div class="form-group">
-        <textarea class="form-control" placeholder="Description" rows="3"></textarea>
-      </div>
-      <div class="form-row">
-        <div class="col">
-          <button type="button" class="btn btn-cancel btn-block">Cancel</button>
-        </div>
-        <div class="col">
-          <button type="submit" class="btn btn-publish btn-block">Submit</button>
-        </div>
-      </div>
-      <div> May take up to 24 hours to be approved </div>
-    </form>
-  </div>
 </div>
 {% endblock %}
 
@@ -75,27 +72,27 @@
 <script>
 // Ensure that the toggleForm function is defined at a level where it can be accessed by the onclick events
 function toggleForm(type) {
-  var itemFields = document.getElementById('itemFields');
-  var serviceFields = document.getElementById('serviceFields');
-  var itemButton = document.getElementById('itemButton');
-  var serviceButton = document.getElementById('serviceButton');
+    var itemFields = document.getElementById('itemFields');
+    var serviceFields = document.getElementById('serviceFields');
+    var itemButton = document.getElementById('itemButton');
+    var serviceButton = document.getElementById('serviceButton');
 
-  if (type === 'item') {
-    itemFields.style.display = 'block';
-    serviceFields.style.display = 'none';
-    itemButton.classList.add('active');
-    serviceButton.classList.remove('active');
-  } else {
-    itemFields.style.display = 'none';
-    serviceFields.style.display = 'block';
-    itemButton.classList.remove('active');
-    serviceButton.classList.add('active');
-  }
+    if (type === 'item') {
+        itemFields.style.display = 'block';
+        serviceFields.style.display = 'none';
+        itemButton.classList.add('active');
+        serviceButton.classList.remove('active');
+    } else {
+        itemFields.style.display = 'none';
+        serviceFields.style.display = 'block';
+        itemButton.classList.remove('active');
+        serviceButton.classList.add('active');
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  // Initialize the form to show the item form by default
-  toggleForm('item');
+    // Initialize the form to show the item form by default
+    toggleForm('item');
 });
 </script>
 {% endblock %}
