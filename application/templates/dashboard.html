@@ -17,48 +17,40 @@
           </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade show active" id="pills-messages" role="tabpanel" aria-labelledby="pills-messages-tab">
-            <!-- Sample Messages -->
-            <div class="card">
-              <h5>C++ Tutoring</h5>
-              <p>Aymane Arfaoui</p>
-              <p>I'm interested in scheduling a tutoring session for next week. Can you provide more details on the curriculum?</p>
-              <p class="text-muted">March 22, 2024</p>
-            </div>
-            <div class="card">
-              <h5>Graphic Design Inquiry</h5>
-              <p>David Daly</p>
-              <p>Do you offer Calculus services?</p>
-              <p class="text-muted">April 5, 2024</p>
-            </div>
-            <div class="card">
-              <h5>Used Laptop Question</h5>
-              <p>Aman Singh</p>
-              <p>Is the laptop you're selling still available? What are the specs?</p>
-              <p class="text-muted">April 18, 2024</p>
-            </div>
-            <!-- More messages can be added here -->
+          <!-- Messages Tab -->
+        <div class="tab-pane fade show active" id="pills-messages" role="tabpanel" aria-labelledby="pills-messages-tab">
+          {% for msg in messages %}
+          <div class="card">
+            <h5>{{ msg.item_title }}</h5>
+            <p>{{ msg.sender_username }}</p>
+            <p>{{ msg.content }}</p>
+            <p class="text-muted">{{ msg.message_date.strftime('%B %d, %Y') }}</p>
           </div>
-          <div class="tab-pane fade" id="pills-items" role="tabpanel" aria-labelledby="pills-items-tab">
-            <!-- Sample Items for Sale -->
-            <div class="card">
-              <h5>Operating Systems textbook - CSC 415</h5>
-              <p>Price: $150</p>
-              <p>If you wanna pass this class, you need this textbook</p>
-            </div>
-            <div class="card">
-              <h5>CSC-648</h5>
-              <p>Price: $50</p>
-              <p>Complete notes for the class, don't need to show up anymore</p>
-            </div>
-            <div class="card">
-              <h5>Tutoring Lessons in Calculus</h5>
-              <p>Price: $50</p>
-              <p>Become a genius in Calc</p>
-            </div>
-            <!-- More items can be added here -->
-          </div>
+          {% else %}
+          <p>No messages found.</p>
+          {% endfor %}
         </div>
+
+          <!-- Items Tab -->
+  <div class="tab-pane fade" id="pills-items" role="tabpanel" aria-labelledby="pills-items-tab">
+    <div class="container-fluid mt-4">
+      <div class="row row-cols-1 row-cols-lg-2 g-4">
+        {% for item in items %}
+        <div class="col">
+          <a href="{{ url_for('item_details', item_id=item.item_id) }}" class="card h-100 text-decoration-none text-dark">
+            <div class="d-flex align-items-center">
+              <img src="{{ url_for('static', filename=item.photo_path) }}" class="img-fluid rounded-start" alt="{{ item.title }}" style="width: 150px; height: auto;">
+              <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text">{{ item.description }}</p>
+                <p class="card-price text-danger">${{ '%.2f'|format(item.price) }}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% else %}
+        <p>No items found.</p>
+        {% endfor %}
       </div>
     </div>
   </div>

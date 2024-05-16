@@ -301,35 +301,104 @@ def post():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    if 'user_id' not in session:
+        flash("You must be logged in to view the dashboard.")
+        return redirect(url_for('login'))
 
-@app.route('/message/<int:item_id>', methods=['GET'])
+    user_id = session['user_id']
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        # Fetch messages for the user
+        cursor.execute("""
+        SELECT msg.*, it.title as item_title, ru.username as sender_username
+        FROM message msg
+        JOIN registered_user ru ON msg.sender_id = ru.user_id
+        JOIN items_for_sale it ON msg.item_id = it.item_id
+        WHERE msg.seller_id = %s
+        ORDER BY msg.message_date DESC
+        """, (user_id,))
+        messages = cursor.fetchall()
+
+        # Fetch items posted by the user
+        cursor.execute("""
+        SELECT it.*, cat.category_name
+        FROM items_for_sale it
+        JOIN categories cat ON it.category_id = cat.categories_id
+        WHERE it.seller = %s
+        ORDER BY it.listed_date DESC
+        """, (user_id,))
+        items = cursor.fetchall()
+
+    finally:
+        cursor.close()
+        conn.close()
+
+    return render_template('dashboard.html', messages=messages, items=items)
+
+
+@app.route('/message/<int:item_id>', methods=['GET', 'POST'])
 def message(item_id):
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
-    try:
-        # Fetching item details including seller's information
-        cursor.execute("""
-            SELECT it.title, ru.username
-            FROM items_for_sale it
-            JOIN registered_user ru ON it.seller = ru.user_id
-            WHERE it.item_id = %s
-        """, (item_id,))
-        item_details = cursor.fetchone()
-        
-        # Checking if item details are found
-        if not item_details:
-            flash('Item not found.')
+    
+    if request.method == 'POST':
+        if 'user_id' not in session:
+            flash("You must be logged in to send a message.")
+            return redirect(url_for('login'))
+
+        sender_id = session['user_id']
+        recipient_username = request.form['recipient']
+        subject = request.form['subject']
+        message_content = request.form['message']
+
+        try:
+            # Fetch recipient ID using the username
+            cursor.execute("SELECT user_id FROM registered_user WHERE username = %s", (recipient_username,))
+            recipient = cursor.fetchone()
+            if not recipient:
+                flash('Recipient not found.')
+                return redirect(url_for('search'))
+
+            recipient_id = recipient['user_id']
+
+            # Insert message into the database
+            cursor.execute("""
+                INSERT INTO message (sender_id, seller_id, item_id, content, message_date)
+                VALUES (%s, %s, %s, %s, NOW())
+            """, (sender_id, recipient_id, item_id, message_content))
+            conn.commit()
+            flash("Message sent successfully.")
             return redirect(url_for('search'))
-        
-        return render_template('message.html', username=item_details['username'], title=item_details['title'])
-    except Exception as e:
-        flash(f"An error occurred: {e}")
-        return redirect(url_for('search'))
-    finally:
-        if cursor:
+
+        except Exception as e:
+            flash(f"An error occurred: {e}")
+            return redirect(url_for('search'))
+
+        finally:
             cursor.close()
-        if conn:
+            conn.close()
+    else:
+        try:
+            cursor.execute("""
+                SELECT it.title, ru.username
+                FROM items_for_sale it
+                JOIN registered_user ru ON it.seller = ru.user_id
+                WHERE it.item_id = %s
+            """, (item_id,))
+            item_details = cursor.fetchone()
+            
+            if not item_details:
+                flash('Item not found.')
+                return redirect(url_for('search'))
+            
+            return render_template('message.html', username=item_details['username'], title=item_details['title'], item_id=item_id)
+        except Exception as e:
+            flash(f"An error occurred: {e}")
+            return redirect(url_for('search'))
+        finally:
+            cursor.close()
             conn.close()
 
 
