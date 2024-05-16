@@ -1,13 +1,15 @@
-{% extends 'base_navbar.html' %} {% block title %}Message - SwiftSell{% endblock
-%} {% block head_extra %}
+{% extends 'base_navbar.html' %} 
+{% block title %}Message - SwiftSell{% endblock%} 
+
+{% block head_extra %}
 <!-- Custom styles for this page -->
 <link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/message.css') }}"
 />
+{% endblock %} 
 
-
-{% endblock %} {% block content %}
+{% block content %}
 <!-- Section for sending a message -->
 <div class="message-section">
   <div class="container">

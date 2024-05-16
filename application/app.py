@@ -303,9 +303,35 @@ def post():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/message')
-def message():
-    return render_template('message.html')
+@app.route('/message/<int:item_id>', methods=['GET'])
+def message(item_id):
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    try:
+        # Fetching item details including seller's information
+        cursor.execute("""
+            SELECT it.title, ru.username
+            FROM items_for_sale it
+            JOIN registered_user ru ON it.seller = ru.user_id
+            WHERE it.item_id = %s
+        """, (item_id,))
+        item_details = cursor.fetchone()
+        
+        # Checking if item details are found
+        if not item_details:
+            flash('Item not found.')
+            return redirect(url_for('search'))
+        
+        return render_template('message.html', username=item_details['username'], title=item_details['title'])
+    except Exception as e:
+        flash(f"An error occurred: {e}")
+        return redirect(url_for('search'))
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
 
 @app.route('/item/<int:item_id>')
 def item_details(item_id):
