@@ -26,7 +26,11 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ item.title }}</h5>
                             <p class="card-text">{{ item.description }}</p>
+                            {% if item.seller == user_id %}
+                            <button class="btn btn-outline-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
+                            {% else %}
                             <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller">Contact Seller</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
@@ -76,7 +80,11 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ item.title }}</h5>
                             <p class="card-text">{{ item.description }}</p>
+                            {% if item.seller == user_id %}
+                            <button class="btn btn-outline-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
+                            {% else %}
                             <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller">Contact Seller</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
@@ -109,7 +117,11 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ item.title }}</h5>
                             <p class="card-text">{{ item.description }}</p>
+                            {% if item.seller == user_id %}
+                            <button class="btn btn-outline-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
+                            {% else %}
                             <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller">Contact Seller</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
@@ -126,6 +138,24 @@
     </div>
 </div>
 {% endif %}
+
+<!-- Modal for self-contact attempt -->
+<div class="modal fade" id="selfContactModal" tabindex="-1" aria-labelledby="selfContactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="selfContactModalLabel">Action Not Allowed</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You cannot contact yourself about your own product.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
@@ -142,9 +172,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const sellerButtons = document.querySelectorAll('.contact-seller');
     sellerButtons.forEach(button => {
         button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default action
-            event.stopPropagation(); // Stop event from bubbling up to the parent card
-            window.open(this.href, '_blank'); // Opens in a new tab
+            if (button.dataset.bsTarget === '#selfContactModal') {
+                event.preventDefault(); // Prevent default action if contacting self
+                event.stopPropagation(); // Stop event from bubbling up to the parent card
+            }
         });
     });
 });

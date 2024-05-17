@@ -107,14 +107,14 @@ def search():
                            search_results=search_results,
                            recent_items=recent_items,
                            categories=categories,
-                           category_names = category_names,
+                           category_names=category_names,
                            number_of_results_shown=len(search_results),
                            total_results=len(search_results),
                            total_items_count=total_items_count,
                            search_query=search_query,
-                           
                            category=category,
-                           sort_by=sort_by)
+                           sort_by=sort_by,
+                           user_id=session.get('user_id'))
 
     
 # @app.route('/')
@@ -408,21 +408,23 @@ def item_details(item_id):
     cursor = conn.cursor(dictionary=True)
     try:
         query = """
-        SELECT it.*, cat.category_name FROM items_for_sale it
+        SELECT it.*, cat.category_name, ru.username as seller_username FROM items_for_sale it
         JOIN categories cat ON it.category_id = cat.categories_id
+        JOIN registered_user ru ON it.seller = ru.user_id
         WHERE it.item_id = %s;
         """
         cursor.execute(query, (item_id,))  # Note the comma to make it a tuple
         item = cursor.fetchone()
         if not item:
             return "Item not found", 404
-        return render_template('item_details.html', item=item)
+        return render_template('item_details.html', item=item, user_id=session.get('user_id'))
     except Exception as e:
         print(f"SQL Error: {e}")
         return "An error occurred", 500
     finally:
         cursor.close()
         conn.close()
+
         
 @app.route('/logout')
 def logout():
