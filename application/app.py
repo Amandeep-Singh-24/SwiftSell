@@ -123,23 +123,83 @@ def search():
 
 @app.route('/about/amandeepsingh')
 def about_amandeepsingh():
-    return render_template('about_amandeep.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_amandeep.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/about/aymanearfaoui')
 def about_aymanearfaoui():
-    return render_template('about_aymanearfaoui.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_aymanearfaoui.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/about/alexisalvarez')
 def about_alexisalvarez():
-    return render_template('about_alexisalvarez.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_alexisalvarez.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/about/davedaly')
 def about_davedaly():
-    return render_template('about_davedaly.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_davedaly.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/about/markusreyer')
 def about_markusreyer():
-    return render_template('about_markusreyer.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_markusreyer.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -363,7 +423,18 @@ def dashboard():
 def message(item_id):
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
     
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
     if request.method == 'POST':
         if 'user_id' not in session:
             flash("You must be logged in to send a message.")
@@ -414,7 +485,8 @@ def message(item_id):
                 flash('Item not found.')
                 return redirect(url_for('search'))
             
-            return render_template('message.html', username=item_details['username'], title=item_details['title'], item_id=item_id)
+            return render_template('message.html', username=item_details['username'], title=item_details['title'], item_id=item_id, categories=categories,
+                           category_names = category_names)
         except Exception as e:
             flash(f"An error occurred: {e}")
             return redirect(url_for('search'))
@@ -425,6 +497,18 @@ def message(item_id):
 
 @app.route('/item/<int:item_id>')
 def item_details(item_id):
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
     try:
@@ -438,7 +522,8 @@ def item_details(item_id):
         item = cursor.fetchone()
         if not item:
             return "Item not found", 404
-        return render_template('item_details.html', item=item, user_id=session.get('user_id'))
+        return render_template('item_details.html', item=item, user_id=session.get('user_id'), categories=categories,
+                           category_names = category_names)
     except Exception as e:
         print(f"SQL Error: {e}")
         return "An error occurred", 500
