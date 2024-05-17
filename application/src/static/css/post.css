@@ -163,3 +163,8 @@ textarea.form-control {
 #post-item-tab{
     color: black;
 }
+
+.btn.custom-search-btn {
+    width: auto !important;
+    height: 40px !important;
+  }

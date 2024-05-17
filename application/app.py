@@ -107,14 +107,14 @@ def search():
                            search_results=search_results,
                            recent_items=recent_items,
                            categories=categories,
-                           category_names = category_names,
+                           category_names=category_names,
                            number_of_results_shown=len(search_results),
                            total_results=len(search_results),
                            total_items_count=total_items_count,
                            search_query=search_query,
-                           
                            category=category,
-                           sort_by=sort_by)
+                           sort_by=sort_by,
+                           user_id=session.get('user_id'))
 
     
 # @app.route('/')
@@ -310,11 +310,118 @@ def post():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    if 'user_id' not in session:
+        flash("You must be logged in to view the dashboard.")
+        return redirect(url_for('login'))
+    
+    categories = []
+    category_names = {}
+    user_id = session['user_id']
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
 
-@app.route('/message')
-def message():
-    return render_template('message.html')
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    try:
+        # Fetch messages for the user
+        cursor.execute("""
+        SELECT msg.*, it.title as item_title, ru.username as sender_username
+        FROM message msg
+        JOIN registered_user ru ON msg.sender_id = ru.user_id
+        JOIN items_for_sale it ON msg.item_id = it.item_id
+        WHERE msg.seller_id = %s
+        ORDER BY msg.message_date DESC
+        """, (user_id,))
+        messages = cursor.fetchall()
+
+        # Fetch items posted by the user
+        cursor.execute("""
+        SELECT it.*, cat.category_name
+        FROM items_for_sale it
+        JOIN categories cat ON it.category_id = cat.categories_id
+        WHERE it.seller = %s
+        ORDER BY it.listed_date DESC
+        """, (user_id,))
+        items = cursor.fetchall()
+
+    finally:
+        cursor.close()
+        conn.close()
+
+    return render_template('dashboard.html', messages=messages, items=items, categories=categories,
+                           category_names = category_names)
+
+
+@app.route('/message/<int:item_id>', methods=['GET', 'POST'])
+def message(item_id):
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    
+    if request.method == 'POST':
+        if 'user_id' not in session:
+            flash("You must be logged in to send a message.")
+            return redirect(url_for('login'))
+
+        sender_id = session['user_id']
+        recipient_username = request.form['recipient']
+        subject = request.form['subject']
+        message_content = request.form['message']
+
+        try:
+            # Fetch recipient ID using the username
+            cursor.execute("SELECT user_id FROM registered_user WHERE username = %s", (recipient_username,))
+            recipient = cursor.fetchone()
+            if not recipient:
+                flash('Recipient not found.')
+                return redirect(url_for('search'))
+
+            recipient_id = recipient['user_id']
+
+            # Insert message into the database
+            cursor.execute("""
+                INSERT INTO message (sender_id, seller_id, item_id, content, message_date)
+                VALUES (%s, %s, %s, %s, NOW())
+            """, (sender_id, recipient_id, item_id, message_content))
+            conn.commit()
+            flash("Message sent successfully.")
+            return redirect(url_for('search'))
+
+        except Exception as e:
+            flash(f"An error occurred: {e}")
+            return redirect(url_for('search'))
+
+        finally:
+            cursor.close()
+            conn.close()
+    else:
+        try:
+            cursor.execute("""
+                SELECT it.title, ru.username
+                FROM items_for_sale it
+                JOIN registered_user ru ON it.seller = ru.user_id
+                WHERE it.item_id = %s
+            """, (item_id,))
+            item_details = cursor.fetchone()
+            
+            if not item_details:
+                flash('Item not found.')
+                return redirect(url_for('search'))
+            
+            return render_template('message.html', username=item_details['username'], title=item_details['title'], item_id=item_id)
+        except Exception as e:
+            flash(f"An error occurred: {e}")
+            return redirect(url_for('search'))
+        finally:
+            cursor.close()
+            conn.close()
+
 
 @app.route('/item/<int:item_id>')
 def item_details(item_id):
@@ -322,21 +429,23 @@ def item_details(item_id):
     cursor = conn.cursor(dictionary=True)
     try:
         query = """
-        SELECT it.*, cat.category_name FROM items_for_sale it
+        SELECT it.*, cat.category_name, ru.username as seller_username FROM items_for_sale it
         JOIN categories cat ON it.category_id = cat.categories_id
+        JOIN registered_user ru ON it.seller = ru.user_id
         WHERE it.item_id = %s;
         """
         cursor.execute(query, (item_id,))  # Note the comma to make it a tuple
         item = cursor.fetchone()
         if not item:
             return "Item not found", 404
-        return render_template('item_details.html', item=item)
+        return render_template('item_details.html', item=item, user_id=session.get('user_id'))
     except Exception as e:
         print(f"SQL Error: {e}")
         return "An error occurred", 500
     finally:
         cursor.close()
         conn.close()
+
         
 @app.route('/logout')
 def logout():
