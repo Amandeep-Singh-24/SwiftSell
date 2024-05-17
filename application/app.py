@@ -19,9 +19,9 @@ app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'src', 'static', 'images')
 # Database connection info. Note that this is not a secure connection.
 db_config = {
     'user': 'root',
-    'password': '123456789',
+    'password': 'SodaStereo1990!',
     'host': '127.0.0.1',
-    'database': 'swiftselldb'
+    'database': 'mydb'
 }
 
 # Setting the secret key to a random collection of characters. Tell no-one!
@@ -221,11 +221,19 @@ def signup():
 
 @app.route("/post", methods=["GET", "POST"])
 def post():
+    categories = []
+    category_names = {}
     # Check if the user is logged in
     if "user_id" not in session:
         flash("You must be logged in to post an item.")
         return redirect(url_for('login'))
-
+    
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
     # Get user ID from session
     user_id = session['user_id']
     print(user_id)
@@ -296,7 +304,8 @@ def post():
         return redirect(url_for('post'))
 
     # Render the post.html template for GET requests
-    return render_template('post.html')
+    return render_template('post.html', categories=categories,
+                           category_names = category_names,)
 
 
 @app.route('/dashboard')
