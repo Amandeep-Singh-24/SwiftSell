@@ -21,7 +21,7 @@
             <p>{{ item.description }}</p>
             
             <!-- Contact Seller Button -->
-            <a href="/message" class="btn btn-primary">Contact Seller</a>
+            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-primary">Contact Seller</a>
         </div>
     </div>
     <!-- Additional Info or Actions -->
