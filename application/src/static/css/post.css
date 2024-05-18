@@ -168,3 +168,7 @@ textarea.form-control {
     width: auto !important;
     height: 40px !important;
   }
+
+.form-control{
+    appearance: auto !important;
+}

@@ -1,18 +1,16 @@
-{% extends 'base_navbar.html' %} {% block title %}Post - SwiftSell{% endblock %}
+{% extends 'base_navbar.html' %}
+
+{% block title %}Post - SwiftSell{% endblock %}
+
 {% block head_extra %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/post.css') }}"
-/>
-{% endblock %} {% block content %} {% for message in get_flashed_messages() %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block content %}
+{% for message in get_flashed_messages() %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
   {{ message }}
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endfor %}
 
@@ -24,120 +22,49 @@
       </div>
       <div class="col-md-auto">
         <div class="btn-group" role="group" aria-label="Post Type">
-          <button
-            type="button"
-            class="btn btn-secondary active"
-            id="itemButton"
-            name="action"
-            value="item"
-            onclick="toggleForm('item'); submitForm('item')"
-          >
+          <button type="button" class="btn btn-secondary active" id="itemButton" name="action" value="item" onclick="toggleForm('item'); submitForm('item')">
             Sales
           </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            id="serviceButton"
-            name="action"
-            value="service"
-            onclick="toggleForm('service'); submitForm('service')"
-          >
+          <button type="button" class="btn btn-secondary" id="serviceButton" name="action" value="service" onclick="toggleForm('service'); submitForm('service')">
             Service
           </button>
         </div>
       </div>
     </div>
-    <form
-      id="postForm"
-      method="POST"
-      action="/post"
-      enctype="multipart/form-data"
-    >
+    <form id="postForm" method="POST" action="/post" enctype="multipart/form-data">
       <!-- Item fields -->
       <input type="hidden" name="action" id="action" value="item" />
       <div id="itemFields">
         <div class="form-group">
           <label for="photoUpload">Add Photos</label>
-          <input
-            type="file"
-            class="form-control-file"
-            id="photoUpload"
-            name="photo_path"
-            multiple
-          />
-          <small class="form-text text-muted"
-            >Pick 2 to 3 photos, include pictures with different angles and
-            details.</small
-          >
+          <input type="file" class="form-control-file" id="photoUpload" name="photo_path" multiple />
+          <small class="form-text text-muted">Please pick a photo which includes the item.</small>
         </div>
         <div class="form-group">
-          <input
-            type="text"
-            class="form-control"
-            name="title"
-            placeholder="Title"
-          />
+          <input type="text" class="form-control" name="title" placeholder="Title" />
           <select class="form-control" name="category_id">
             <option selected>Choose Category</option>
-            <option value="1">Electronics</option>
-            <option value="2">Clothing</option>
-            <option value="3">Furniture</option>
-            <option value="4">Service</option>
+            {% for category in categories %}
+            <option value="{{ category.categories_id }}">{{ category.category_name }}</option>
+            {% endfor %}
           </select>
-          <input
-            type="text"
-            class="form-control"
-            name="price"
-            placeholder="Price"
-          />
-          <textarea
-            class="form-control"
-            name="description"
-            placeholder="Description"
-            rows="3"
-          ></textarea>
+          <input type="text" class="form-control" name="price" placeholder="Price" />
+          <textarea class="form-control" name="description" placeholder="Description" rows="3"></textarea>
         </div>
       </div>
       <!-- Service fields -->
       <div id="serviceFields" style="display: none">
         <div class="form-group">
-          <input
-            type="hidden"
-            type="file"
-            class="form-control-file"
-            id="photoUpload"
-            name="photo_path"
-            multiple
-          />
-          <input
-            type="text"
-            class="form-control"
-            name="service_title"
-            placeholder="Title"
-          />
+          <input type="hidden" type="file" class="form-control-file" id="photoUpload" name="photo_path" multiple />
+          <input type="text" class="form-control" name="service_title" placeholder="Title" />
           <input type="hidden" class="form-control" name="category_id" />
-
-          <input
-            type="text"
-            class="form-control"
-            name="service_price"
-            placeholder="Fee"
-          />
-          <textarea
-            class="form-control"
-            name="service_description"
-            placeholder="Description"
-            rows="3"
-          ></textarea>
+          <input type="text" class="form-control" name="service_price" placeholder="Fee" />
+          <textarea class="form-control" name="service_description" placeholder="Description" rows="3"></textarea>
         </div>
       </div>
       <div class="form-row">
         <div class="col">
-          <button
-            type="button"
-            class="btn btn-cancel btn-block"
-            onclick="window.history.back();"
-          >
+          <button type="button" class="btn btn-cancel btn-block" onclick="window.history.back();">
             Cancel
           </button>
         </div>
@@ -151,9 +78,10 @@
     </form>
   </div>
 </div>
-{% endblock %} {% block scripts %}
+{% endblock %}
+
+{% block scripts %}
 <script>
-  // Ensure that the toggleForm function is defined at a level where it can be accessed by the onclick events
   function toggleForm(type) {
     var itemFields = document.getElementById("itemFields");
     var serviceFields = document.getElementById("serviceFields");
@@ -174,15 +102,10 @@
   }
 
   function submitForm(action) {
-    // Set the hidden input value to the selected action
     document.getElementById("action").value = action;
-
-    // Submit the form
-    // document.getElementById("postForm").submit();
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    // Initialize the form to show the item form by default
     toggleForm("item");
   });
 </script>

@@ -29,7 +29,7 @@
                             {% if item.seller == user_id %}
                             <button class="btn btn-outline-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
                             {% else %}
-                            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller">Contact Seller</a>
+                            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller" target="_blank">Contact Seller</a>
                             {% endif %}
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                             {% if item.seller == user_id %}
                             <button class="btn btn-outline-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
                             {% else %}
-                            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller">Contact Seller</a>
+                            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller" target="_blank">Contact Seller</a>
                             {% endif %}
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                             {% if item.seller == user_id %}
                             <button class="btn btn-outline-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
                             {% else %}
-                            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller">Contact Seller</a>
+                            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller" target="_blank">Contact Seller</a>
                             {% endif %}
                         </div>
                     </div>
@@ -175,6 +175,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if (button.dataset.bsTarget === '#selfContactModal') {
                 event.preventDefault(); // Prevent default action if contacting self
                 event.stopPropagation(); // Stop event from bubbling up to the parent card
+            } else {
+                event.stopPropagation(); // Prevent parent card click event
             }
         });
     });

@@ -23,3 +23,8 @@
     outline: none !important;
     box-shadow: none !important;
   }
+
+  h2{
+    border-bottom: 1px solid #dcdcdc !important;
+    padding-bottom: 10px !important;
+  }

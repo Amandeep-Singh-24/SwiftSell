@@ -167,7 +167,7 @@ def login():
             if check_password_hash(stored_password_hash, pwd):
                 # creating session variable for curr user's id (used for post item)
                 session['user_id'] = user['user_id']
-                return redirect(url_for('search'))  # Redirect to the home page
+                return redirect(url_for('dashboard'))  # Redirect to the home page
             else:
                 return "Invalid password."
         else:
@@ -228,8 +228,14 @@ def post():
 
     # Get user ID from session
     user_id = session['user_id']
-    print(user_id)
-    #check if user wants to post item for sale
+
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+
+    # Fetch categories from the database
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+
     if request.method == 'POST':
         if request.form.get('action') == "item":
             # Grabbing required form info for item
@@ -241,13 +247,8 @@ def post():
             # check user entered 
             if not all([title, description, price, category_id, photo_path]):
                 flash("All fields are required!")
-                return render_template('post.html')
+                return render_template('post.html', categories=categories)
             
-            # initializing db cursor
-            conn = mysql.connector.connect(**db_config)
-            cursor = conn.cursor()
-
-           
             try:
                 # Process file upload
                 pic_filename = secure_filename(photo_path.filename)
@@ -265,9 +266,8 @@ def post():
                 flash("Item posted successfully! Waiting for approval.")
             except Exception as e:
                 flash(f"An error occurred: {e}")
-                return render_template('post.html'), 500
-            
-                
+                return render_template('post.html', categories=categories), 500
+
         elif request.form.get('action') == "service":
             #grab service info from user
             try:
@@ -276,10 +276,8 @@ def post():
                 price = request.form.get('service_price')
                 if not all([title, description, price]):
                     flash("All fields are required!")
-                    return render_template('post.html')
+                    return render_template('post.html', categories=categories)
                 category_id = 4  # Assuming service category ID is fixed
-                conn = mysql.connector.connect(**db_config)
-                cursor = conn.cursor()
                 cursor.execute("""
                     INSERT INTO items_for_sale (title, description, price, live, seller, category_id)
                     VALUES (%s, %s, %s, %s, %s, %s)
@@ -288,7 +286,7 @@ def post():
                 flash("Service posted successfully! Waiting for approval.")
             except Exception as e:
                 flash(f"An error occurred: {e}")
-                return render_template('post.html'), 500
+                return render_template('post.html', categories=categories), 500
             
         cursor.close()
         conn.close()
@@ -296,7 +294,8 @@ def post():
         return redirect(url_for('post'))
 
     # Render the post.html template for GET requests
-    return render_template('post.html')
+    return render_template('post.html', categories=categories)
+
 
 
 @app.route('/dashboard')
@@ -310,6 +309,15 @@ def dashboard():
     cursor = conn.cursor(dictionary=True)
 
     try:
+        # Fetch username of the logged-in user
+        cursor.execute("SELECT username FROM registered_user WHERE user_id = %s", (user_id,))
+        user = cursor.fetchone()
+        if not user:
+            flash("User not found.")
+            return redirect(url_for('login'))
+
+        username = user['username']
+
         # Fetch messages for the user
         cursor.execute("""
         SELECT msg.*, it.title as item_title, ru.username as sender_username
@@ -335,7 +343,7 @@ def dashboard():
         cursor.close()
         conn.close()
 
-    return render_template('dashboard.html', messages=messages, items=items)
+    return render_template('dashboard.html', messages=messages, items=items, username=username)
 
 
 @app.route('/message/<int:item_id>', methods=['GET', 'POST'])
