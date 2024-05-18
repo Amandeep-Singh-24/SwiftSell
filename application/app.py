@@ -19,9 +19,9 @@ app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'src', 'static', 'images')
 # Database connection info. Note that this is not a secure connection.
 db_config = {
     'user': 'root',
-    'password': '123456789',
+    'password': 'SodaStereo1990!',
     'host': '127.0.0.1',
-    'database': 'swiftselldb'
+    'database': 'mydb'
 }
 
 # Setting the secret key to a random collection of characters. Tell no-one!
@@ -123,23 +123,83 @@ def search():
 
 @app.route('/about/amandeepsingh')
 def about_amandeepsingh():
-    return render_template('about_amandeep.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_amandeep.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/about/aymanearfaoui')
 def about_aymanearfaoui():
-    return render_template('about_aymanearfaoui.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_aymanearfaoui.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/about/alexisalvarez')
 def about_alexisalvarez():
-    return render_template('about_alexisalvarez.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_alexisalvarez.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/about/davedaly')
 def about_davedaly():
-    return render_template('about_davedaly.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_davedaly.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/about/markusreyer')
 def about_markusreyer():
-    return render_template('about_markusreyer.html')
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+    return render_template('about_markusreyer.html', categories=categories,
+                           category_names = category_names)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -221,11 +281,19 @@ def signup():
 
 @app.route("/post", methods=["GET", "POST"])
 def post():
+    categories = []
+    category_names = {}
     # Check if the user is logged in
     if "user_id" not in session:
         flash("You must be logged in to post an item.")
         return redirect(url_for('login'))
-
+    
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
     # Get user ID from session
     user_id = session['user_id']
 
@@ -294,8 +362,8 @@ def post():
         return redirect(url_for('post'))
 
     # Render the post.html template for GET requests
-    return render_template('post.html', categories=categories)
-
+    return render_template('post.html', categories=categories,
+                           category_names = category_names,)
 
 
 @app.route('/dashboard')
@@ -303,21 +371,23 @@ def dashboard():
     if 'user_id' not in session:
         flash("You must be logged in to view the dashboard.")
         return redirect(url_for('login'))
-
+    
+    categories = []
+    category_names = {}
     user_id = session['user_id']
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
 
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
     try:
-        # Fetch username of the logged-in user
-        cursor.execute("SELECT username FROM registered_user WHERE user_id = %s", (user_id,))
-        user = cursor.fetchone()
-        if not user:
-            flash("User not found.")
-            return redirect(url_for('login'))
-
-        username = user['username']
-
         # Fetch messages for the user
         cursor.execute("""
         SELECT msg.*, it.title as item_title, ru.username as sender_username
@@ -343,14 +413,26 @@ def dashboard():
         cursor.close()
         conn.close()
 
-    return render_template('dashboard.html', messages=messages, items=items, username=username)
+    return render_template('dashboard.html', messages=messages, items=items, categories=categories,
+                           category_names = category_names)
 
 
 @app.route('/message/<int:item_id>', methods=['GET', 'POST'])
 def message(item_id):
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
     
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
     if request.method == 'POST':
         if 'user_id' not in session:
             flash("You must be logged in to send a message.")
@@ -401,7 +483,8 @@ def message(item_id):
                 flash('Item not found.')
                 return redirect(url_for('search'))
             
-            return render_template('message.html', username=item_details['username'], title=item_details['title'], item_id=item_id)
+            return render_template('message.html', username=item_details['username'], title=item_details['title'], item_id=item_id, categories=categories,
+                           category_names = category_names)
         except Exception as e:
             flash(f"An error occurred: {e}")
             return redirect(url_for('search'))
@@ -412,6 +495,18 @@ def message(item_id):
 
 @app.route('/item/<int:item_id>')
 def item_details(item_id):
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    categories = []
+    category_names = {}
+    
+    cursor.execute("SELECT categories_id, category_name FROM categories")
+    categories = cursor.fetchall()
+    # Fetch categories and create a dictionary with string keys
+    category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+    cursor.close()
+    conn.close()
+
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
     try:
@@ -425,7 +520,8 @@ def item_details(item_id):
         item = cursor.fetchone()
         if not item:
             return "Item not found", 404
-        return render_template('item_details.html', item=item, user_id=session.get('user_id'))
+        return render_template('item_details.html', item=item, user_id=session.get('user_id'), categories=categories,
+                           category_names = category_names)
     except Exception as e:
         print(f"SQL Error: {e}")
         return "An error occurred", 500
