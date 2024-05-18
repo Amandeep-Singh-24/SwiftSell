@@ -19,9 +19,9 @@ app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'src', 'static', 'images')
 # Database connection info. Note that this is not a secure connection.
 db_config = {
     'user': 'root',
-    'password': 'SodaStereo1990!',
+    'password': '123456789',
     'host': '127.0.0.1',
-    'database': 'mydb'
+    'database': 'swiftselldb'
 }
 
 # Setting the secret key to a random collection of characters. Tell no-one!
