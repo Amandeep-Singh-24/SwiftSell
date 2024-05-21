@@ -352,6 +352,7 @@
 
 .form-select.me-2 {
     width: 200px;
+    margin-left: -20px;
   }
 
   .form-control.me-2.flex-grow-1 {

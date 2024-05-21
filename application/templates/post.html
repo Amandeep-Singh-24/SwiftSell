@@ -1,16 +1,19 @@
-{% extends 'base_navbar.html' %}
-
-{% block title %}Post - SwiftSell{% endblock %}
-
+{% extends 'base_navbar.html' %} {% block title %}Post - SwiftSell{% endblock %}
 {% block head_extra %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
-{% endblock %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/post.css') }}"
+/>
 
-{% block content %}
-{% for message in get_flashed_messages() %}
+{% endblock %} {% block content %} {% for message in get_flashed_messages() %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
   {{ message }}
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
 </div>
 {% endfor %}
 
@@ -22,49 +25,137 @@
       </div>
       <div class="col-md-auto">
         <div class="btn-group" role="group" aria-label="Post Type">
-          <button type="button" class="btn btn-secondary active" id="itemButton" name="action" value="item" onclick="toggleForm('item'); submitForm('item')">
-            Sales
+          <button
+            type="button"
+            class="btn btn-secondary active"
+            id="itemButton"
+            name="action"
+            value="item"
+            onclick="toggleForm('item'); submitForm('item')"
+          >
+            Items
           </button>
-          <button type="button" class="btn btn-secondary" id="serviceButton" name="action" value="service" onclick="toggleForm('service'); submitForm('service')">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="serviceButton"
+            name="action"
+            value="service"
+            onclick="toggleForm('service'); submitForm('service')"
+          >
             Service
           </button>
         </div>
       </div>
     </div>
-    <form id="postForm" method="POST" action="/post" enctype="multipart/form-data">
+    <form
+      id="postForm"
+      method="POST"
+      action="/post"
+      enctype="multipart/form-data"
+    >
       <!-- Item fields -->
       <input type="hidden" name="action" id="action" value="item" />
       <div id="itemFields">
-        <div class="form-group">
-          <label for="photoUpload">Add Photos</label>
-          <input type="file" class="form-control-file" id="photoUpload" name="photo_path" multiple />
-          <small class="form-text text-muted">Please pick a photo which includes the item.</small>
+        <div class="form-group required">
+          <label for="title">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            name="title"
+            id="title"
+            placeholder="Title"
+          />
         </div>
-        <div class="form-group">
-          <input type="text" class="form-control" name="title" placeholder="Title" />
-          <select class="form-control" name="category_id">
-            <option selected>Choose Category</option>
-            {% for category in categories %}
-            <option value="{{ category.categories_id }}">{{ category.category_name }}</option>
+        <div class="form-group required">
+          <label for="category">Category</label>
+          <select class="form-select me-2" name="category" id="category">
+            <option value="" {% if category == '' %}selected{% endif %}>Choose Category</option>
+            {% for cat in categories %}
+            <option value="{{ cat.categories_id }}" {% if cat.categories_id|string == category|string %}selected{% endif %}>
+              {{ cat.category_name }}
+            </option>
             {% endfor %}
           </select>
-          <input type="text" class="form-control" name="price" placeholder="Price" />
-          <textarea class="form-control" name="description" placeholder="Description" rows="3"></textarea>
+        </div>
+        <div class="form-group required">
+          <label for="price">Price</label>
+          <input
+            type="text"
+            class="form-control price-field"
+            name="price"
+            id="price"
+            placeholder="Price"
+          />
+        </div>
+        <div class="form-group required">
+          <label for="description">Description</label>
+          <textarea
+            class="form-control"
+            name="description"
+            id="description"
+            placeholder="Recommended to place Course Number in Description"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="photoUpload">Add Photos</label>
+          <input
+            type="file"
+            class="form-control-file"
+            id="photoUpload"
+            name="photo_path"
+            multiple
+          />
+          <small class="form-text text-muted"
+            >Pick 2 to 3 photos, include pictures with different angles and
+            details.</small
+          >
         </div>
       </div>
       <!-- Service fields -->
       <div id="serviceFields" style="display: none">
+        <div class="form-group required">
+          <label for="service_title">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            name="service_title"
+            id="service_title"
+            placeholder="Title"
+          />
+        </div>
         <div class="form-group">
-          <input type="hidden" type="file" class="form-control-file" id="photoUpload" name="photo_path" multiple />
-          <input type="text" class="form-control" name="service_title" placeholder="Title" />
           <input type="hidden" class="form-control" name="category_id" />
-          <input type="text" class="form-control" name="service_price" placeholder="Fee" />
-          <textarea class="form-control" name="service_description" placeholder="Description" rows="3"></textarea>
+        </div>
+        <div class="form-group required">
+          <label for="service_price">Fee</label>
+          <input
+            type="text"
+            class="form-control price-field"
+            name="service_price"
+            id="service_price"
+            placeholder="Fee"
+          />
+        </div>
+        <div class="form-group required">
+          <label for="service_description">Description</label>
+          <textarea
+            class="form-control"
+            name="service_description"
+            id="service_description"
+            placeholder="Description"
+            rows="3"
+          ></textarea>
         </div>
       </div>
       <div class="form-row">
         <div class="col">
-          <button type="button" class="btn btn-cancel btn-block" onclick="window.history.back();">
+          <button
+            type="button"
+            class="btn btn-cancel btn-block"
+            onclick="window.history.back();"
+          >
             Cancel
           </button>
         </div>
@@ -78,10 +169,11 @@
     </form>
   </div>
 </div>
-{% endblock %}
+{% endblock %} 
 
 {% block scripts %}
 <script>
+  // Ensure that the toggleForm function is defined at a level where it can be accessed by the onclick events
   function toggleForm(type) {
     var itemFields = document.getElementById("itemFields");
     var serviceFields = document.getElementById("serviceFields");
@@ -102,11 +194,34 @@
   }
 
   function submitForm(action) {
+    // Set the hidden input value to the selected action
     document.getElementById("action").value = action;
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    // Initialize the form to show the item form by default
     toggleForm("item");
+
+    // Add event listeners to required fields
+    var requiredFields = document.querySelectorAll('.form-group.required .form-control, .form-group.required .form-select');
+    requiredFields.forEach(function(field) {
+      field.addEventListener('input', function() {
+        if (field.value.trim() !== '') {
+          field.classList.add('valid');
+          field.classList.remove('invalid');
+          field.closest('.form-group').classList.remove('required');
+        } else {
+          field.classList.remove('valid');
+          field.classList.add('invalid');
+          field.closest('.form-group').classList.add('required');
+        }
+      });
+    });
+
+    // Trigger the input event manually to handle pre-filled values
+    requiredFields.forEach(function(field) {
+      field.dispatchEvent(new Event('input'));
+    });
   });
 </script>
 {% endblock %}

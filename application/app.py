@@ -303,23 +303,16 @@ def post():
     # Get user ID from session
     user_id = session['user_id']
 
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor(dictionary=True)
-
-    # Fetch categories from the database
-    cursor.execute("SELECT categories_id, category_name FROM categories")
-    categories = cursor.fetchall()
-
     if request.method == 'POST':
         if request.form.get('action') == "item":
             # Grabbing required form info for item
             title = request.form.get('title')
             description = request.form.get('description')
             price = request.form.get('price')
-            category_id = request.form.get('category_id')
+            category = request.form.get('category')
             photo_path = request.files.get('photo_path')
             # check user entered 
-            if not all([title, description, price, category_id, photo_path]):
+            if not all([title, description, price, category, photo_path]):
                 flash("All fields are required!")
                 return render_template('post.html', categories=categories)
             
@@ -335,7 +328,7 @@ def post():
                 cursor.execute("""
                     INSERT INTO items_for_sale (title, description, price, live, seller, category_id, photo_path, thumbnail)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                """, (title, description, price, 0, user_id, category_id, db_path, db_path))
+                """, (title, description, price, 0, user_id, category, db_path, db_path))
                 conn.commit()
                 flash("Item posted successfully! Waiting for approval.")
             except Exception as e:
@@ -368,8 +361,7 @@ def post():
         return redirect(url_for('post'))
 
     # Render the post.html template for GET requests
-    return render_template('post.html', categories=categories,
-                           category_names = category_names,)
+    return render_template('post.html', categories=categories, category_names=category_names)
 
 
 @app.route('/dashboard')
