@@ -3,29 +3,39 @@
 {% block title %}Sign Up - SwiftSell{% endblock %}
 
 {% block head_extra %}
+<!-- Custom CSS for the sign-up page -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="wrapper">
+    <!-- Sign-up form -->
     <form class="form-signin" method="post" action="/signup" id="signupForm">
         <h2 class="form-signin-heading">Create An Account</h2>
+        <!-- Input for first name -->
         <input type="text" class="form-control" name="first_name" placeholder="First Name" required autofocus>
+        <!-- Input for last name -->
         <input type="text" class="form-control" name="last_name" placeholder="Last Name" required>
+        <!-- Input for username -->
         <input type="text" class="form-control" name="username" placeholder="Username" required>
+        <!-- Input for email -->
         <input type="email" class="form-control" name="email" placeholder="Email (e.g., email@sfsu.edu)" required>
+        <!-- Input for password -->
         <input type="password" class="form-control" name="password" placeholder="Password" required>
+        <!-- Checkbox for terms and conditions -->
         <div class="checkbox mb-3">
             <label>
                 <input type="checkbox" name="termsCheckbox" required> I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>.
             </label>
         </div>
+        <!-- Submit button -->
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+        <!-- Link to log in if the user already has an account -->
         <a class="create-account" href="/login">Already have an account? Log in!</a>
     </form>
 </div>
 
-<!-- Modals -->
+<!-- Modal for invalid email address -->
 <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -40,6 +50,7 @@
     </div>
 </div>
 
+<!-- Modal for terms and conditions -->
 <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -54,6 +65,7 @@
     </div>
 </div>
 
+<!-- Modal for terms and conditions check -->
 <div class="modal fade" id="termsCheckModal" tabindex="-1" aria-labelledby="termsCheckModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -70,6 +82,7 @@
 {% endblock %}
 
 {% block scripts %}
+<!-- jQuery, Popper.js, and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -79,10 +92,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const emailInput = document.querySelector('input[type="email"]');
     const termsCheckbox = document.querySelector('input[name="termsCheckbox"]');
 
+    // Add submit event listener to the form
     form.addEventListener("submit", function(event) {
+        // Check if email ends with @sfsu.edu
         if (!emailInput.value.endsWith("@sfsu.edu")) {
             event.preventDefault(); // Stop form submission
             new bootstrap.Modal(document.getElementById('emailModal')).show(); // Show the email modal
+        // Check if terms and conditions checkbox is checked
         } else if (!termsCheckbox.checked) {
             event.preventDefault(); // Stop form submission
             new bootstrap.Modal(document.getElementById('termsCheckModal')).show(); // Show the terms and conditions modal

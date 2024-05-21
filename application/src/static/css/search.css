@@ -408,6 +408,14 @@
     border-bottom: 1px solid #dcdcdc
 }
 
+.item-title{
+    text-align: left;
+}
+
+#sortby{
+    margin: 0px;
+}
+
 /* Responsive design for cards */
 @media (max-width: 768px) {
     .card-info {

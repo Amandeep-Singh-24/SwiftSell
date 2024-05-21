@@ -15,7 +15,7 @@
         </div>
         <div class="col-md-6">
             <!-- Item Details Section -->
-            <h2>{{ item.title }}</h2>
+            <h2 class = "item-title">{{ item.title }}</h2>
             <p class="text-muted">Listed on {{ item.listed_date.strftime('%B %d, %Y') }}</p>
             <h3 class="text-danger">${{ '%.2f'|format(item.price) }}</h3>
             <p>{{ item.description }}</p>

@@ -28,9 +28,9 @@ db_config = {
 app.secret_key = '2e2f346d432544a7bb0e08738ad38356' 
 
 # Secure cookie settings
-app.config['SESSION_COOKIE_SECURE'] = True
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+# app.config['SESSION_COOKIE_SECURE'] = True
+# app.config['SESSION_COOKIE_HTTPONLY'] = True
+# app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 
 @app.route('/', methods=['GET'])
@@ -42,31 +42,40 @@ def search():
     recent_items = []
     total_items_count = 0
     category_names = {}
+
     try:
+        # Retrieve search parameters from the request
         search_query = request.args.get('search_query', '').strip()
         category = request.args.get('category', 'all').strip()
         sort_by = request.args.get('sort_by', None)
 
+        # Connect to the database
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
         
+        # Fetch categories from the database
         cursor.execute("SELECT categories_id, category_name FROM categories")
         categories = cursor.fetchall()
-        # Fetch categories and create a dictionary with string keys
+        
+        # Create a dictionary of category names with string keys
         category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
 
-        # Sorting options
+        # Define sorting options
         sort_options = {
             'price_asc': 'it.price ASC',
             'price_desc': 'it.price DESC',
             'name_asc': 'it.title ASC',
             'name_desc': 'it.title DESC'
         }
-        sql_order_by = " ORDER BY it.listed_date DESC"  # Default sort
+        
+        # Default sorting order
+        sql_order_by = " ORDER BY it.listed_date DESC"
+        
+        # Update sorting order if sort_by parameter is provided
         if sort_by in sort_options:
             sql_order_by = f" ORDER BY {sort_options[sort_by]}"
 
-        # SQL query for items
+        # Base SQL query to fetch items
         sql_query = """
             SELECT it.*, cat.category_name FROM items_for_sale it 
             JOIN categories cat ON it.category_id = cat.categories_id 
@@ -74,21 +83,25 @@ def search():
         """
         query_params = []
 
+        # Modify SQL query if a search query is provided
         if search_query:
             sql_query += " AND (it.title LIKE %s OR it.description LIKE %s)"
             search_term = f"%{search_query}%"
             query_params.extend([search_term, search_term])
 
+        # Modify SQL query if a category is selected
         if category != 'all':
             sql_query += " AND cat.categories_id = %s"
             query_params.append(category)
 
+        # Append sorting order to SQL query
         sql_query += sql_order_by
 
+        # Execute the final SQL query
         cursor.execute(sql_query, query_params)
         search_results = cursor.fetchall()
 
-        # Also apply sorting to recently listed items if no search query is made
+        # Fetch recently listed items if no search query and category is 'all'
         if not search_query and category == 'all':
             cursor.execute("""
                 SELECT it.*, cat.category_name 
@@ -100,15 +113,18 @@ def search():
             """)
             recent_items = cursor.fetchall()
             
-        # Compute total visible items
+        # Compute total number of visible items
         total_items_count = len(search_results) + len(recent_items)
 
     finally:
+        # Ensure the cursor is closed
         if cursor:
             cursor.close()
+        # Ensure the connection is closed
         if conn:
             conn.close()
 
+    # Render the search results page with the fetched data
     return render_template('search_results.html',
                            search_results=search_results,
                            recent_items=recent_items,

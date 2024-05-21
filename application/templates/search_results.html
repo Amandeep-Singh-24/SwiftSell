@@ -54,7 +54,7 @@
     <div class="d-flex justify-content-between">
         <h2> &nbsp; &nbsp; {{ search_query if search_query else category_names.get(category, 'All Items') }} - {{ total_results }} Items Listed {% if category != 'all' %} in {{ category_names.get(category, '') }}{% endif %}</h2>
         <div class="d-flex align-items-center">
-            <form action="/" method="get" class="d-flex">
+            <form action="/" method="get" class="d-flex" onsubmit="return validateSearch()">
                 <input type="hidden" name="search_query" value="{{ search_query }}">
                 <input type="hidden" name="category" value="{{ category }}">
                 <label for="sortby" class="form-label me-2">Sort by:</label>
@@ -156,6 +156,25 @@
     </div>
   </div>
 </div>
+
+<!-- Modal for character limit warning -->
+<div class="modal fade" id="charLimitModal" tabindex="-1" aria-labelledby="charLimitModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="charLimitModalLabel">Character Limit Exceeded</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Your search query cannot exceed 40 characters. Please enter a shorter search query.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 {% endblock %}
 
 {% block scripts %}
@@ -181,5 +200,16 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+// Function to validate search input length
+function validateSearch() {
+    var input = document.querySelector('input[name="search_query"]');
+    if (input && input.value.length > 40) {
+        var charLimitModal = new bootstrap.Modal(document.getElementById('charLimitModal'));
+        charLimitModal.show();
+        return false;
+    }
+    return true;
+}
 </script>
 {% endblock %}
