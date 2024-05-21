@@ -19,13 +19,19 @@ app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'src', 'static', 'images')
 # Database connection info. Note that this is not a secure connection.
 db_config = {
     'user': 'root',
-    'password': 'SodaStereo1990!',
+    'password': '123456789',
     'host': '127.0.0.1',
-    'database': 'mydb'
+    'database': 'swiftselldb'
 }
 
 # Setting the secret key to a random collection of characters. Tell no-one!
 app.secret_key = '2e2f346d432544a7bb0e08738ad38356' 
+
+# Secure cookie settings
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
 
 @app.route('/', methods=['GET'])
 def search():
@@ -371,50 +377,79 @@ def dashboard():
     if 'user_id' not in session:
         flash("You must be logged in to view the dashboard.")
         return redirect(url_for('login'))
-    
+
     categories = []
     category_names = {}
     user_id = session['user_id']
+
+    # Fetch username
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT username FROM registered_user WHERE user_id = %s", (user_id,))
+    user = cursor.fetchone()
+    username = user['username'] if user else "User"
 
+    # Fetch categories
     cursor.execute("SELECT categories_id, category_name FROM categories")
     categories = cursor.fetchall()
-    # Fetch categories and create a dictionary with string keys
     category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
+
+    # Fetch messages for the user
+    cursor.execute("""
+    SELECT msg.*, it.title as item_title, ru.username as sender_username
+    FROM message msg
+    JOIN registered_user ru ON msg.sender_id = ru.user_id
+    JOIN items_for_sale it ON msg.item_id = it.item_id
+    WHERE msg.seller_id = %s
+    ORDER BY msg.message_date DESC
+    """, (user_id,))
+    messages = cursor.fetchall()
+
+    # Fetch items posted by the user
+    cursor.execute("""
+    SELECT it.*, cat.category_name
+    FROM items_for_sale it
+    JOIN categories cat ON it.category_id = cat.categories_id
+    WHERE it.seller = %s
+    ORDER BY it.listed_date DESC
+    """, (user_id,))
+    items = cursor.fetchall()
+
     cursor.close()
     conn.close()
 
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor(dictionary=True)
-    try:
-        # Fetch messages for the user
-        cursor.execute("""
-        SELECT msg.*, it.title as item_title, ru.username as sender_username
-        FROM message msg
-        JOIN registered_user ru ON msg.sender_id = ru.user_id
-        JOIN items_for_sale it ON msg.item_id = it.item_id
-        WHERE msg.seller_id = %s
-        ORDER BY msg.message_date DESC
-        """, (user_id,))
-        messages = cursor.fetchall()
+    return render_template('dashboard.html', username=username, messages=messages, items=items, categories=categories,
+                           category_names=category_names)
 
-        # Fetch items posted by the user
-        cursor.execute("""
-        SELECT it.*, cat.category_name
-        FROM items_for_sale it
-        JOIN categories cat ON it.category_id = cat.categories_id
-        WHERE it.seller = %s
-        ORDER BY it.listed_date DESC
-        """, (user_id,))
-        items = cursor.fetchall()
+@app.route('/delete_item/<int:item_id>', methods=['DELETE'])
+def delete_item(item_id):
+    if 'user_id' not in session:
+        return {"error": "Unauthorized"}, 401
+
+    user_id = session['user_id']
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+
+    try:
+        # Ensure the item belongs to the user
+        cursor.execute("SELECT item_id FROM items_for_sale WHERE item_id = %s AND seller = %s", (item_id, user_id))
+        item = cursor.fetchone()
+
+        if not item:
+            return {"error": "Item not found or not authorized"}, 404
+
+        # Delete the item
+        cursor.execute("DELETE FROM items_for_sale WHERE item_id = %s", (item_id,))
+        conn.commit()
+        return {"success": "Item deleted"}, 200
+
+    except mysql.connector.Error as err:
+        print("Error: {}".format(err))
+        return {"error": "Failed to delete item"}, 500
 
     finally:
         cursor.close()
         conn.close()
-
-    return render_template('dashboard.html', messages=messages, items=items, categories=categories,
-                           category_names = category_names)
 
 
 @app.route('/message/<int:item_id>', methods=['GET', 'POST'])
