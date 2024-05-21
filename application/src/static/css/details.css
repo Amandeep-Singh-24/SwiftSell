@@ -1,8 +1,3 @@
-.btn {
-    background-color: black !important;
-    color: white !important;
-}
-
 .img-fluid {
     max-height: 400px; /* Adjust the max-height as per your design needs */
     width: auto; /* Keep the original aspect ratio */

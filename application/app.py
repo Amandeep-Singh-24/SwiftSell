@@ -478,6 +478,10 @@ def delete_item(item_id):
 
 @app.route('/message/<int:item_id>', methods=['GET', 'POST'])
 def message(item_id):
+     # Check if the user is logged in
+    if 'user_id' not in session:
+        flash("You must be logged in to access the message page.")
+        return redirect(url_for('login'))
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
     categories = []
