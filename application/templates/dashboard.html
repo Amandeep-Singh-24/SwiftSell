@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     {% else %}
-                    <p>No items found.</p>
+                    <p> &nbsp; &nbsp; No items found.</p>
                     {% endfor %}
                 </div>
             </div>
@@ -75,28 +75,32 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll('.delete-item').forEach(button => {
-        button.addEventListener('click', function(event) {
-            const itemId = this.getAttribute('data-item-id');
-            if (confirm('Are you sure you want to delete this item?')) {
-                fetch(`/delete_item/${itemId}`, {
-                    method: 'DELETE'
-                })
-                .then(response => {
-                    if (response.ok) {
-                        location.reload();
-                    } else {
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.delete-item').forEach(button => {
+            button.addEventListener('click', function(event) {
+                const itemId = this.getAttribute('data-item-id');
+                if (confirm('Are you sure you want to delete this item?')) {
+                    fetch(`/delete_item/${itemId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert('Failed to delete item.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
                         alert('Failed to delete item.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Failed to delete item.');
-                });
-            }
+                    });
+                }
+            });
         });
     });
-});
+    
 </script>
 {% endblock %}

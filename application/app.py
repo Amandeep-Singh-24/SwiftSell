@@ -430,10 +430,14 @@ def delete_item(item_id):
         if not item:
             return {"error": "Item not found or not authorized"}, 404
 
+        # Delete associated messages first
+        cursor.execute("DELETE FROM message WHERE item_id = %s", (item_id,))
+        conn.commit()
+
         # Delete the item
         cursor.execute("DELETE FROM items_for_sale WHERE item_id = %s", (item_id,))
         conn.commit()
-        return {"success": "Item deleted"}, 200
+        return {"success": "Item and associated messages deleted successfully"}, 200
 
     except mysql.connector.Error as err:
         print("Error: {}".format(err))
@@ -442,6 +446,7 @@ def delete_item(item_id):
     finally:
         cursor.close()
         conn.close()
+
 
 
 @app.route('/message/<int:item_id>', methods=['GET', 'POST'])
@@ -455,11 +460,7 @@ def message(item_id):
     categories = cursor.fetchall()
     # Fetch categories and create a dictionary with string keys
     category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
-    cursor.close()
-    conn.close()
-
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor(dictionary=True)
+    
     if request.method == 'POST':
         if 'user_id' not in session:
             flash("You must be logged in to send a message.")
@@ -511,7 +512,7 @@ def message(item_id):
                 return redirect(url_for('search'))
             
             return render_template('message.html', username=item_details['username'], title=item_details['title'], item_id=item_id, categories=categories,
-                           category_names = category_names)
+                           category_names=category_names)
         except Exception as e:
             flash(f"An error occurred: {e}")
             return redirect(url_for('search'))
