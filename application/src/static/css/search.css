@@ -327,6 +327,8 @@
 
   h2{
     margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
   }
 
   .bg-dark {
@@ -398,6 +400,12 @@
 
 .custom-search-form .btn:hover {
     background-color: #e68a00; /* Darker shade for hover effect */
+}
+
+.Welcome-text{
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dcdcdc
 }
 
 /* Responsive design for cards */

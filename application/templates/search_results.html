@@ -6,7 +6,7 @@
 <!-- Intro Section - Only show when there's no search_query and the category is 'all' -->
 {% if not search_query and category == 'all' %}
 <div class="container-fluid mt-4 text-center">
-    <h2>Welcome to SwiftSell! A place for SFSU students, faculty, and staff to sell!</h2>
+    <h2 class="Welcome-text">Welcome to SwiftSell! A place for SFSU students, faculty, and staff to sell!</h2>
 </div>
 {% endif %}
 
@@ -102,8 +102,8 @@
 </div>
 {% else %}
 <div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between">
-        <h2> &nbsp; &nbsp; All Items</h2>
+    <div class="container-fluid mt-4">
+        <h2> &nbsp; All Items</h2>
     </div>
     <div class="row row-cols-1 row-cols-lg-2 g-4">
         {% for item in search_results %}
