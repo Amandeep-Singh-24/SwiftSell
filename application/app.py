@@ -392,7 +392,7 @@ def dashboard():
     FROM message msg
     JOIN registered_user ru ON msg.sender_id = ru.user_id
     JOIN items_for_sale it ON msg.item_id = it.item_id
-    WHERE msg.seller_id = %s
+    WHERE msg.recipient_id = %s
     ORDER BY msg.message_date DESC
     """, (user_id,))
     messages = cursor.fetchall()
@@ -558,9 +558,12 @@ def item_details(item_id):
         conn.close()
 
         
-@app.route('/logout')
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    session.clear()  # Clears all data in the session
+    try:
+        session.clear()  # Clears all data in the session
+    except Exception as e:
+        print(f"An error occurred: {e}")
     return redirect(url_for('search'))
 
 
