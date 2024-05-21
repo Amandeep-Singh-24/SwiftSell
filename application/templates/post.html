@@ -1,0 +1,109 @@
+{% extends 'base_navbar.html' %}
+
+{% block title %}Post - SwiftSell{% endblock %}
+
+{% block head_extra %}
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Content container -->
+<div class="container-fluid content-container">
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="post-item-tab" data-bs-toggle="tab" href="#postItem">Post An Item</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="post-service-tab" data-bs-toggle="tab" href="#postService">Post A Service</a>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+        <!-- Post Item Tab Pane -->
+        <div class="tab-pane fade show active" id="postItem">
+            <div class="post-section">
+                <h2>Post An Item</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="photoUpload">Add Photos</label>
+                        <input type="file" class="form-control-file" id="photoUpload" multiple>
+                        <small class="form-text text-muted">Pick 2 to 3 photos, include pictures with different angles and details.</small>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Title">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control">
+                            <option selected>Choose Category</option>
+                            <option>Electronics</option>
+                            <option>Clothing</option>
+                            <option>Furniture</option>
+                            <!-- Add other categories as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Price">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Description" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <button type="button" class="btn btn-cancel btn-block">Cancel</button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-publish btn-block">Publish</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Post Service Tab Pane -->
+        <div class="tab-pane fade" id="postService">
+            <div class="post-section">
+                <h2>Post A Service</h2>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Service Title">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control">
+                            <option selected>Choose Service Category</option>
+                            <option>Education</option>
+                            <option>Home Repair</option>
+                            <option>IT & Tech Support</option>
+                            <!-- Add other categories as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Fee">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Service Description" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <button type="button" class="btn btn-cancel btn-block">Cancel</button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-publish btn-block">Publish</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.7.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+{% endblock %}
+

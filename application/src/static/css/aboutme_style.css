@@ -1,48 +1,48 @@
 /* Base page styling */
 body {
-    background-color: #f8f9fa;
+    background-color: white !important;
     color: #212529;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Header style */
 .header {
-    text-align: left;
-    padding: 1rem;
-    font-size: 1.25rem;
-    color: black;
-    margin-bottom: 1rem;
+    text-align: left !important;
+    padding: 1rem !important;
+    font-size: 1.25rem !important;
+    color: black !important;
+    margin-bottom: 1rem !important;
 }
 
 /* Card styling for content blocks */
 .card {
-    background-color: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin: 1rem;
-    width: auto;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
+    background-color: #ffffff !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+    margin: 1rem !important;
+    width: auto !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 2rem !important;
 }
 
 /* Content within cards */
 .card-body {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    padding: 2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
 }
 
 /* Descriptive text and button styling */
 .about-text {
-    font-size: 1.5rem;
-    line-height: 1.8;
-    margin-bottom: 2rem;
+    font-size: 1.5rem !important;
+    line-height: 1.8 !important;
+    margin-bottom: 2rem !important;
 }
 
 .contact-btn {
@@ -58,25 +58,25 @@ body {
 }
 
 .contact-btn:hover {
-    background-color: #a9a9a9;
+    background-color: #a9a9a9 !important;
 }
 
 /* Ensuring content is centrally aligned */
 .centered-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    flex-direction: column;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    flex-direction: column !important;
 }
 
 /* Card container adjustments */
 .card-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    width: 100%;
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+    width: 100% !important;
 }
 
 /* Footer styles */
@@ -97,19 +97,25 @@ body {
   body {
     padding-bottom: 60px; /* Adjust this value based on the height of your footer */
   }
+
+  .card img{
+    width: 100% !important;
+  }
+
+
   
 /* Responsive adjustments for cards on larger screens */
 @media (min-width: 768px) {
     .card {
-        flex-basis: 40%;
-        max-width: 40%;
+        flex-basis: 40% !important;
+        max-width: 40% !important;
     }
     .card-img-top {
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
+        height: 100% !important;
+        width: 100% !important;
+        object-fit: cover !important;
     }
     .card-body {
-        height: 100%; /* Adjust height to fill the card */
+        height: 100% !important; /* Adjust height to fill the card */
     }
 }
