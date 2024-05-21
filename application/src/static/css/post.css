@@ -22,6 +22,30 @@ body, html {
     border: 1px solid rgba(0,0,0,0.1);
 }
 
+
+/* styling for red outlines in post input forms */
+.form-control.price-field {
+    width: 10%;
+}
+.btn-group .btn {
+    margin-right: 10px;
+}
+.form-row .col {
+    margin-right: 20px;
+}
+.form-group.required .form-control {
+    border: 2px solid red;
+}
+.form-group.required label::after {
+    content: " *";
+    color: red;
+}
+.form-group .form-control.valid {
+    border: 1px solid #ced4da;
+}
+.form-group label.valid::after {
+    content: "";
+}
 /* Ensure form controls take full width */
 .form-control, .form-select, .btn-block {
     width: 100%; /* Set the width to 100% of their parent element */
