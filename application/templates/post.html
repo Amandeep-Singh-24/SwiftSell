@@ -1,19 +1,19 @@
-{% extends 'base_navbar.html' %} {% block title %}Post - SwiftSell{% endblock %}
-{% block head_extra %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/post.css') }}"
-/>
+{% extends 'base_navbar.html' %} 
 
-{% endblock %} {% block content %} {% for message in get_flashed_messages() %}
+{% block title %}Post - SwiftSell{% endblock %} 
+
+{% block head_extra %}
+<!-- Custom CSS for the post page -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}" />
+{% endblock %} 
+
+{% block content %} 
+
+<!-- Display flashed messages (e.g., form validation errors) -->
+{% for message in get_flashed_messages() %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
   {{ message }}
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endfor %}
 
@@ -24,6 +24,7 @@
         <h2>Post Your Listing</h2>
       </div>
       <div class="col-md-auto">
+        <!-- Toggle buttons for post type (Item or Service) -->
         <div class="btn-group" role="group" aria-label="Post Type">
           <button
             type="button"
@@ -48,24 +49,15 @@
         </div>
       </div>
     </div>
-    <form
-      id="postForm"
-      method="POST"
-      action="/post"
-      enctype="multipart/form-data"
-    >
-      <!-- Item fields -->
+    <!-- Post form -->
+    <form id="postForm" method="POST" action="/post" enctype="multipart/form-data">
+      <!-- Hidden input to store the selected action (Item or Service) -->
       <input type="hidden" name="action" id="action" value="item" />
+      <!-- Item fields -->
       <div id="itemFields">
         <div class="form-group required">
           <label for="title">Title</label>
-          <input
-            type="text"
-            class="form-control"
-            name="title"
-            id="title"
-            placeholder="Title"
-          />
+          <input type="text" class="form-control" name="title" id="title" placeholder="Title" />
         </div>
         <div class="form-group required">
           <label for="category">Category</label>
@@ -80,89 +72,44 @@
         </div>
         <div class="form-group required">
           <label for="price">Price</label>
-          <input
-            type="text"
-            class="form-control price-field"
-            name="price"
-            id="price"
-            placeholder="Price"
-          />
+          <input type="text" class="form-control price-field" name="price" id="price" placeholder="Price" />
         </div>
         <div class="form-group required">
           <label for="description">Description</label>
-          <textarea
-            class="form-control"
-            name="description"
-            id="description"
-            placeholder="Recommended to place Course Number in Description"
-            rows="3"
-          ></textarea>
+          <textarea class="form-control" name="description" id="description" placeholder="Recommended to place Course Number in Description" rows="3"></textarea>
         </div>
         <div class="form-group">
           <label for="photoUpload">Add Photos</label>
-          <input
-            type="file"
-            class="form-control-file"
-            id="photoUpload"
-            name="photo_path"
-            multiple
-          />
-          <small class="form-text text-muted"
-            >Pick 2 to 3 photos, include pictures with different angles and
-            details.</small
-          >
+          <input type="file" class="form-control-file" id="photoUpload" name="photo_path" multiple />
+          <small class="form-text text-muted">Pick 2 to 3 photos, include pictures with different angles and details.</small>
         </div>
       </div>
       <!-- Service fields -->
       <div id="serviceFields" style="display: none">
         <div class="form-group required">
           <label for="service_title">Title</label>
-          <input
-            type="text"
-            class="form-control"
-            name="service_title"
-            id="service_title"
-            placeholder="Title"
-          />
+          <input type="text" class="form-control" name="service_title" id="service_title" placeholder="Title" />
         </div>
         <div class="form-group">
           <input type="hidden" class="form-control" name="category_id" />
         </div>
         <div class="form-group required">
           <label for="service_price">Fee</label>
-          <input
-            type="text"
-            class="form-control price-field"
-            name="service_price"
-            id="service_price"
-            placeholder="Fee"
-          />
+          <input type="text" class="form-control price-field" name="service_price" id="service_price" placeholder="Fee" />
         </div>
         <div class="form-group required">
           <label for="service_description">Description</label>
-          <textarea
-            class="form-control"
-            name="service_description"
-            id="service_description"
-            placeholder="Description"
-            rows="3"
-          ></textarea>
+          <textarea class="form-control" name="service_description" id="service_description" placeholder="Description" rows="3"></textarea>
         </div>
       </div>
       <div class="form-row">
         <div class="col">
-          <button
-            type="button"
-            class="btn btn-cancel btn-block"
-            onclick="window.history.back();"
-          >
-            Cancel
-          </button>
+          <!-- Cancel button -->
+          <button type="button" class="btn btn-cancel btn-block" onclick="window.history.back();">Cancel</button>
         </div>
         <div class="col">
-          <button type="submit" class="btn btn-publish btn-block">
-            Submit
-          </button>
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-publish btn-block">Submit</button>
         </div>
       </div>
       <div>May take up to 24 hours to be approved</div>
@@ -173,7 +120,7 @@
 
 {% block scripts %}
 <script>
-  // Ensure that the toggleForm function is defined at a level where it can be accessed by the onclick events
+  // Toggle form display between Item and Service fields
   function toggleForm(type) {
     var itemFields = document.getElementById("itemFields");
     var serviceFields = document.getElementById("serviceFields");
@@ -193,8 +140,8 @@
     }
   }
 
+  // Set the hidden input value to the selected action
   function submitForm(action) {
-    // Set the hidden input value to the selected action
     document.getElementById("action").value = action;
   }
 

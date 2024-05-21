@@ -1,93 +1,194 @@
-{% extends 'base_navbar.html' %}
+{% extends 'base_navbar.html' %} {% block title %}Sign Up - SwiftSell{% endblock
+%} {% block head_extra %}
+<!-- Custom CSS for the sign-up page -->
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/signup.css') }}"
+/>
+{% endblock %} {% block content %}
 
-{% block title %}Sign Up - SwiftSell{% endblock %}
+<!-- Display flashed messages (e.g., form validation errors) -->
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %}
 
-{% block head_extra %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
-{% endblock %}
-
-{% block content %}
 <div class="wrapper">
-    <form class="form-signin" method="post" action="/signup" id="signupForm">
-        <h2 class="form-signin-heading">Create An Account</h2>
-        <input type="text" class="form-control" name="first_name" placeholder="First Name" required autofocus>
-        <input type="text" class="form-control" name="last_name" placeholder="Last Name" required>
-        <input type="text" class="form-control" name="username" placeholder="Username" required>
-        <input type="email" class="form-control" name="email" placeholder="Email (e.g., email@sfsu.edu)" required>
-        <input type="password" class="form-control" name="password" placeholder="Password" required>
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="termsCheckbox" required> I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>.
-            </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
-        <a class="create-account" href="/login">Already have an account? Log in!</a>
-    </form>
-</div>
-
-<!-- Modals -->
-<div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="emailModalLabel">Invalid Email Address</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Please use an SFSU email address that ends with @sfsu.edu.
-            </div>
-        </div>
+  <!-- Sign-up form -->
+  <form class="form-signin" method="post" action="/signup" id="signupForm">
+    <h2 class="form-signin-heading">Create An Account</h2>
+    <!-- Input for first name -->
+    <input
+      type="text"
+      class="form-control"
+      name="first_name"
+      placeholder="First Name"
+      required
+      autofocus
+    />
+    <!-- Input for last name -->
+    <input
+      type="text"
+      class="form-control"
+      name="last_name"
+      placeholder="Last Name"
+      required
+    />
+    <!-- Input for username -->
+    <input
+      type="text"
+      class="form-control"
+      name="username"
+      placeholder="Username"
+      required
+    />
+    <!-- Input for email -->
+    <input
+      type="email"
+      class="form-control"
+      name="email"
+      placeholder="Email (e.g., email@sfsu.edu)"
+      required
+    />
+    <!-- Input for password -->
+    <input
+      type="password"
+      class="form-control"
+      name="password"
+      placeholder="Password"
+      required
+    />
+    <!-- Checkbox for terms and conditions -->
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" name="termsCheckbox" required /> I agree to the
+        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal"
+          >Terms and Conditions</a
+        >.
+      </label>
     </div>
+    <!-- Submit button -->
+    <button class="btn btn-lg btn-primary btn-block" type="submit">
+      Sign Up
+    </button>
+    <!-- Link to log in if the user already has an account -->
+    <a class="create-account" href="/login">Already have an account? Log in!</a>
+  </form>
 </div>
 
-<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Here are the terms and conditions...</p>
-            </div>
-        </div>
+<!-- Modal for invalid email address -->
+<div
+  class="modal fade"
+  id="emailModal"
+  tabindex="-1"
+  aria-labelledby="emailModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="emailModalLabel">Invalid Email Address</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Please use an SFSU email address that ends with @sfsu.edu.
+      </div>
     </div>
+  </div>
 </div>
 
-<div class="modal fade" id="termsCheckModal" tabindex="-1" aria-labelledby="termsCheckModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="termsCheckModalLabel">Terms and Conditions</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                You must agree to the terms and conditions before signing up.
-            </div>
-        </div>
+<!-- Modal for terms and conditions -->
+<div
+  class="modal fade"
+  id="termsModal"
+  tabindex="-1"
+  aria-labelledby="termsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Here are the terms and conditions...</p>
+      </div>
     </div>
+  </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
+<!-- Modal for terms and conditions check -->
+<div
+  class="modal fade"
+  id="termsCheckModal"
+  tabindex="-1"
+  aria-labelledby="termsCheckModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="termsCheckModalLabel">
+          Terms and Conditions
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        You must agree to the terms and conditions before signing up.
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<!-- jQuery, Popper.js, and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+  crossorigin="anonymous"
+></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("signupForm");
     const emailInput = document.querySelector('input[type="email"]');
     const termsCheckbox = document.querySelector('input[name="termsCheckbox"]');
 
-    form.addEventListener("submit", function(event) {
-        if (!emailInput.value.endsWith("@sfsu.edu")) {
-            event.preventDefault(); // Stop form submission
-            new bootstrap.Modal(document.getElementById('emailModal')).show(); // Show the email modal
-        } else if (!termsCheckbox.checked) {
-            event.preventDefault(); // Stop form submission
-            new bootstrap.Modal(document.getElementById('termsCheckModal')).show(); // Show the terms and conditions modal
-        }
+    // Add submit event listener to the form
+    form.addEventListener("submit", function (event) {
+      // Check if email ends with @sfsu.edu
+      if (!emailInput.value.endsWith("@sfsu.edu")) {
+        event.preventDefault(); // Stop form submission
+        new bootstrap.Modal(document.getElementById("emailModal")).show(); // Show the email modal
+        // Check if terms and conditions checkbox is checked
+      } else if (!termsCheckbox.checked) {
+        event.preventDefault(); // Stop form submission
+        new bootstrap.Modal(document.getElementById("termsCheckModal")).show(); // Show the terms and conditions modal
+      }
     });
-});
+  });
 </script>
 {% endblock %}

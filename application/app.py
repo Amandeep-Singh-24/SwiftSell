@@ -28,9 +28,9 @@ db_config = {
 app.secret_key = '2e2f346d432544a7bb0e08738ad38356' 
 
 # Secure cookie settings
-app.config['SESSION_COOKIE_SECURE'] = True
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+# app.config['SESSION_COOKIE_SECURE'] = True
+# app.config['SESSION_COOKIE_HTTPONLY'] = True
+# app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 
 @app.route('/', methods=['GET'])
@@ -42,31 +42,40 @@ def search():
     recent_items = []
     total_items_count = 0
     category_names = {}
+
     try:
+        # Retrieve search parameters from the request
         search_query = request.args.get('search_query', '').strip()
         category = request.args.get('category', 'all').strip()
         sort_by = request.args.get('sort_by', None)
 
+        # Connect to the database
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
         
+        # Fetch categories from the database
         cursor.execute("SELECT categories_id, category_name FROM categories")
         categories = cursor.fetchall()
-        # Fetch categories and create a dictionary with string keys
+        
+        # Create a dictionary of category names with string keys
         category_names = {str(cat['categories_id']): cat['category_name'] for cat in categories}
 
-        # Sorting options
+        # Define sorting options
         sort_options = {
             'price_asc': 'it.price ASC',
             'price_desc': 'it.price DESC',
             'name_asc': 'it.title ASC',
             'name_desc': 'it.title DESC'
         }
-        sql_order_by = " ORDER BY it.listed_date DESC"  # Default sort
+        
+        # Default sorting order
+        sql_order_by = " ORDER BY it.listed_date DESC"
+        
+        # Update sorting order if sort_by parameter is provided
         if sort_by in sort_options:
             sql_order_by = f" ORDER BY {sort_options[sort_by]}"
 
-        # SQL query for items
+        # Base SQL query to fetch items
         sql_query = """
             SELECT it.*, cat.category_name FROM items_for_sale it 
             JOIN categories cat ON it.category_id = cat.categories_id 
@@ -74,21 +83,25 @@ def search():
         """
         query_params = []
 
+        # Modify SQL query if a search query is provided
         if search_query:
             sql_query += " AND (it.title LIKE %s OR it.description LIKE %s)"
             search_term = f"%{search_query}%"
             query_params.extend([search_term, search_term])
 
+        # Modify SQL query if a category is selected
         if category != 'all':
             sql_query += " AND cat.categories_id = %s"
             query_params.append(category)
 
+        # Append sorting order to SQL query
         sql_query += sql_order_by
 
+        # Execute the final SQL query
         cursor.execute(sql_query, query_params)
         search_results = cursor.fetchall()
 
-        # Also apply sorting to recently listed items if no search query is made
+        # Fetch recently listed items if no search query and category is 'all'
         if not search_query and category == 'all':
             cursor.execute("""
                 SELECT it.*, cat.category_name 
@@ -100,15 +113,18 @@ def search():
             """)
             recent_items = cursor.fetchall()
             
-        # Compute total visible items
+        # Compute total number of visible items
         total_items_count = len(search_results) + len(recent_items)
 
     finally:
+        # Ensure the cursor is closed
         if cursor:
             cursor.close()
+        # Ensure the connection is closed
         if conn:
             conn.close()
 
+    # Render the search results page with the fetched data
     return render_template('search_results.html',
                            search_results=search_results,
                            recent_items=recent_items,
@@ -228,6 +244,7 @@ def login():
         cursor.execute("SELECT user_id, username, password FROM registered_user WHERE username = %s", (username,))
         user = cursor.fetchone()
 
+        # if username exists in db then check if passwords match
         if user:
             stored_password_hash = user['password']
             if check_password_hash(stored_password_hash, pwd):
@@ -235,9 +252,11 @@ def login():
                 session['user_id'] = user['user_id']
                 return redirect(url_for('dashboard'))  # Redirect to the home page
             else:
-                return "Invalid password."
+                flash("Password does not match.")
+                return render_template("login.html")
         else:
-            return "User not found."
+            flash("User does not exist.")
+            return render_template("login.html")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -262,6 +281,7 @@ def signup():
             # Check if username already exists
             cursor.execute("SELECT * FROM registered_user WHERE username = %s", (username,))
             if cursor.fetchone():
+                flash("This username already exists!")
                 return render_template("signup.html", error="Username already exists.")
 
             # Hash the password
@@ -272,11 +292,17 @@ def signup():
                 "INSERT INTO registered_user (username, password, first_name, last_name, email) VALUES (%s, %s, %s, %s, %s)",
                 (username, hashed, first_name, last_name, email)
             )
+            #grab user session id
+            cursor.execute("SELECT user_id, username, password FROM registered_user WHERE username = %s", (username,))
+            user = cursor.fetchone()
+            if user:
+                session['user_id'] = user['user_id']
             conn.commit()  # Commit to save changes to the database
 
-            return redirect("/login")  # Redirect to login after successful signup
+            return redirect("/dashboard")  # Redirect to login after successful signup
         except mysql.connector.Error as err:
             print("Error: {}".format(err))
+            flash(f"An error occurred: {err}")
             return render_template("signup.html", error="Failed to register user.")
         finally:
             cursor.close()
@@ -335,6 +361,7 @@ def post():
                 flash(f"An error occurred: {e}")
                 return render_template('post.html', categories=categories), 500
 
+        # code for processing service upload
         elif request.form.get('action') == "service":
             #grab service info from user
             try:
@@ -392,7 +419,7 @@ def dashboard():
     FROM message msg
     JOIN registered_user ru ON msg.sender_id = ru.user_id
     JOIN items_for_sale it ON msg.item_id = it.item_id
-    WHERE msg.recipient_id = %s
+    WHERE msg.seller_id = %s
     ORDER BY msg.message_date DESC
     """, (user_id,))
     messages = cursor.fetchall()

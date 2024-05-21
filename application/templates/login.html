@@ -1,16 +1,35 @@
-{% extends 'base_navbar.html' %} {% block title %}Login - SwiftSell{% endblock
-%} {% block head_extra %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/login.css') }}"
-/>
-{% endblock %} {% block content %}
+{% extends 'base_navbar.html' %} 
+
+{% block title %}Login - SwiftSell{% endblock %} 
+
+{% block head_extra %}
+<!-- Custom CSS for the login page -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+{% endblock %} 
+
+{% block content %}
+
+<!-- Display flashed messages (e.g., form validation errors) -->
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %}
+
 <div class="wrapper">
+  <!-- Login Form -->
   <form class="form-signin" id="loginForm" method="POST" action="/login">
     <h2 class="form-signin-heading">Log in Here</h2>
     <h3 class="form-signin-subtext">
       Enter your username and password to sign in
     </h3>
+    <!-- Username Input -->
     <input
       type="text"
       class="form-control"
@@ -19,6 +38,7 @@
       required=""
       autofocus=""
     />
+    <!-- Password Input -->
     <input
       type="password"
       class="form-control"
@@ -26,6 +46,7 @@
       placeholder="*********"
       required=""
     />
+    <!-- Remember Me Checkbox -->
     <label class="checkbox">
       <input
         type="checkbox"
@@ -35,21 +56,21 @@
       />
       Remember me
     </label>
+    <!-- Submit Button -->
     <button class="btn btn-lg btn-primary btn-block" type="submit">
       Login
     </button>
+    <!-- Links to Sign Up and Forgot Password -->
     <a class="create-account" href="/signup">Don't have an account? Sign up!</a>
     <br></br>
     <a class="create-account" href="#">Forgot password?</a>
   </form>
 </div>
+{% endblock %} 
 
-{% endblock %} {% block scripts %}
+{% block scripts %}
+<!-- jQuery, Popper.js, and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script
-  src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-  crossorigin="anonymous"
-></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 {% endblock %}
