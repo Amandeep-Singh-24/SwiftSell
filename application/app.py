@@ -18,8 +18,8 @@ app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'src', 'static', 'images')
 
 # Database connection info. Note that this is not a secure connection.
 db_config = {
-    'user': 'root',
-    'password': '123456789',
+    'user': 'ubuntu',
+    'password': 'Aman2423!',
     'host': '127.0.0.1',
     'database': 'swiftselldb'
 }
