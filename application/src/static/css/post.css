@@ -22,6 +22,30 @@ body, html {
     border: 1px solid rgba(0,0,0,0.1);
 }
 
+
+/* styling for red outlines in post input forms */
+.form-control.price-field {
+    width: 10%;
+}
+.btn-group .btn {
+    margin-right: 10px;
+}
+.form-row .col {
+    margin-right: 20px;
+}
+.form-group.required .form-control {
+    border: 2px solid red;
+}
+.form-group.required label::after {
+    content: " *";
+    color: red;
+}
+.form-group .form-control.valid {
+    border: 1px solid #ced4da;
+}
+.form-group label.valid::after {
+    content: "";
+}
 /* Ensure form controls take full width */
 .form-control, .form-select, .btn-block {
     width: 100%; /* Set the width to 100% of their parent element */
@@ -56,10 +80,8 @@ body, html {
     color: #999;
 }
 .btn {
-    padding: 0px;
     transition: all 0.3s ease;
-    height: 37px;
-    width: 50%;
+    margin-bottom: 15px;
 }
 .btn-cancel {
     background-color: black !important;
@@ -77,6 +99,24 @@ body, html {
 .btn-publish:hover {
     background-color: #4cae4c !important;
 }
+
+.btn-secondary.active{
+    background-color: black;
+    border-color: white;
+}
+
+.btn-secondary.active:hover {
+    color: #fff;
+    background-color: #5c636a;
+    border-color: #565e64;
+  }
+
+.btn-secondary {
+    background-color: black;
+    border-color: white;
+    text-align: center;
+}
+
 .form-text {
     display: block !important;
     margin-top: 10px !important;
@@ -145,4 +185,73 @@ textarea.form-control {
 
 #post-item-tab{
     color: black;
+}
+
+.btn.custom-search-btn {
+    width: auto !important;
+    height: 40px !important;
+  }
+
+ #category{
+    margin-left: 0px;
+ }
+
+ @media (max-width: 767px) {
+    .content-container {
+        padding-top: 5% !important;
+        padding-bottom: 5% !important;
+    }
+
+    .post-section {
+        padding: 20px !important;
+        max-width: 100% !important;
+        min-width: auto !important;
+        width: 90% !important; /* Reduce width for mobile */
+    }
+
+    .form-group.required .form-control,
+    .form-group.required .form-select {
+        width: 100% !important; /* Ensure full width on mobile */
+    }
+
+    .btn-group .btn {
+        margin-right: 5px;
+    }
+
+    .form-row .col {
+        margin-right: 0 !important;
+        margin-bottom: 10px !important; /* Add spacing between buttons */
+    }
+
+    .btn-block {
+        width: 100% !important; /* Ensure buttons take full width on mobile */
+    }
+
+    .btn-group {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    .btn-group .btn {
+        margin-bottom: 10px !important;
+        width: 100% !important;
+    }
+
+    .form-control.price-field {
+        width: 100% !important;
+    }
+
+    textarea.form-control {
+        width: 100% !important;
+        margin-top: 10px !important;
+    }
+
+    .form-group {
+        margin-bottom: 15px !important; /* Add some spacing between form elements */
+    }
+
+    .btn.custom-search-btn {
+        width: 100% !important;
+    }
 }

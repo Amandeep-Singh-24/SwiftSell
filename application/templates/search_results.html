@@ -3,21 +3,72 @@
 {% block title %}Search Results - SwiftSell{% endblock %}
 
 {% block content %}
-    <!-- Results count and sort by section -->
-    <div class="container-fluid">
-        <div class="results-sort-line d-flex justify-content-between align-items-center py-2 border-bottom">
-            <div>
-            {% if search_query %}
-                <span> &nbsp; {{ number_of_results_shown }} of {{ total_results }} results for "{{ search_query }}"</span>
-            {% elif category != 'all' %}
-                <span> &nbsp; {{ number_of_results_shown }} of {{ total_results }} results for "{{ category_names.get(category, 'Unknown Category') }}"</span>
-            {% else %}
-                <span> &nbsp; Over {{ total_items_count }} items available</span>
-            {% endif %}
+
+<!-- Display flashed messages (e.g., form validation errors) -->
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %}
+
+<!-- Intro Section - Only show when there's no search_query and the category is 'all' -->
+{% if not search_query and category == 'all' %}
+<div class="container-fluid mt-4 text-center">
+    <h2 class="Welcome-text">Welcome to SwiftSell! A place for SFSU students, faculty, and staff to sell!</h2>
+</div>
+{% endif %}
+
+<!-- Recently Listed Items Section -->
+{% if not search_query and category == 'all' %}
+<div class="container-fluid mt-4">
+    <h2> &nbsp; &nbsp; Recently Listed Items</h2>
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
+        {% for item in recent_items %}
+        <div class="col">
+            <div class="card h-100 clickable-card" data-href="{{ url_for('item_details', item_id=item.item_id) }}">
+                <div class="row g-0">
+                    <div class="col-md-4 d-flex align-items-center justify-content-center p-2">
+                        <img src="{{ url_for('static', filename=item.photo_path) }}" class="img-fluid rounded" alt="{{ item.title }}" style="object-fit: cover; max-height: 180px;">
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.title }}</h5>
+                            <p class="card-text">{{ item.description }}</p>
+                            {% if item.seller == user_id %}
+                            <button class="btn btn-outline-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
+                            {% else %}
+                            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller" target="_blank">Contact Seller</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
+                        <div class="text-center">
+                            <h5 class="card-price text-danger">${{ '%.2f'|format(item.price) }}</h5>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- Sort by section -->
+        </div>
+        {% else %}
+        <p>No recent items found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- All Items or Search Results Section - Show sort and results count only when there's a search query or category selection -->
+{% if search_query or (category != 'all' and category != None) %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between">
+        <h2> &nbsp; &nbsp; {{ search_query if search_query else category_names.get(category, 'All Items') }} - {{ total_results }} Items Listed {% if category != 'all' %} in {{ category_names.get(category, '') }}{% endif %}</h2>
         <div class="d-flex align-items-center">
-            <form action="/" method="get" class="d-flex">
+            <form action="/" method="get" class="d-flex" onsubmit="return validateSearch()">
                 <input type="hidden" name="search_query" value="{{ search_query }}">
                 <input type="hidden" name="category" value="{{ category }}">
                 <label for="sortby" class="form-label me-2">Sort by:</label>
@@ -31,57 +82,10 @@
             </form>
         </div>
     </div>
-</div>
-
-    <!-- Intro Section - This will only show when there's no search_query -->
-    {% if not search_query and category == 'all' %}
-        <div class="container-fluid mt-4 text-center">
-            <h2>Welcome to SwiftSell</h2>
-            <p>SwiftSell is a community-driven marketplace tailored for SFSU students, faculty, and staff. Discover a wide range of used items, from textbooks to tech, all sold directly by students like you. In addition to tangible goods, SwiftSell is your go-to platform for finding student-provided services, including tutoring sessions, delivery services, and more. Connect with sellers directly to negotiate, trade, or purchase — all within the SFSU community.</p>
-        </div>
-    {% endif %}
-
-<!-- Recently Listed Items Section -->
-{% if not search_query and category == 'all' %}
-<div class="container-fluid mt-4 px-4">
-    <h2>Recently Listed Items</h2>
-    <div class="row row-cols-1 row-cols-lg-2 g-4">
-        {% for item in recent_items %}
-        <div class="col">
-            <div class="card h-100">
-                <div class="row g-0">
-                    <div class="col-md-4 d-flex align-items-center justify-content-center p-2">
-                        <img src="{{ url_for('static', filename=item.photo_path) }}" class="img-fluid rounded" alt="{{ item.title }}" style="object-fit: cover; max-height: 180px;">
-                    </div>
-                    <div class="col-md-5">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item.title }}</h5>
-                            <p class="card-text">{{ item.description }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
-                        <div class="text-center">
-                            <h5 class="card-price text-danger">${{ '%.2f'|format(item.price) }}</h5>
-                            <a href="/message" target="_blank" class="btn btn-outline-primary contact-seller">Contact Seller</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% else %}
-        <p>No recent items found.</p>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-
-<!-- All Items or Search Results Section -->
-<div class="container-fluid mt-4 px-4">
-    <h2> &nbsp; {{ 'Search Results' if search_query else 'All Items' }}</h2>
     <div class="row row-cols-1 row-cols-lg-2 g-4">
         {% for item in search_results %}
         <div class="col">
-            <div class="card h-100">
+            <div class="card h-100 clickable-card" data-href="{{ url_for('item_details', item_id=item.item_id) }}">
                 <div class="row g-0">
                     <div class="col-md-4 d-flex align-items-center justify-content-center p-2">
                         <img src="{{ url_for('static', filename=item.photo_path) }}" class="img-fluid rounded" alt="{{ item.title }}" style="object-fit: cover; max-height: 180px;">
@@ -90,12 +94,16 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ item.title }}</h5>
                             <p class="card-text">{{ item.description }}</p>
+                            {% if item.seller == user_id %}
+                            <button class="btn btn-outline-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
+                            {% else %}
+                            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller" target="_blank">Contact Seller</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
                         <div class="text-center">
                             <h5 class="card-price text-danger">${{ '%.2f'|format(item.price) }}</h5>
-                            <a href="/message" class="btn btn-outline-primary contact-seller">Contact Seller</a>
                         </div>
                     </div>
                 </div>
@@ -106,4 +114,116 @@
         {% endfor %}
     </div>
 </div>
+{% else %}
+<div class="container-fluid mt-4">
+    <div class="container-fluid mt-4">
+        <h2> &nbsp; All Items</h2>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
+        {% for item in search_results %}
+        <div class="col">
+            <div class="card h-100 clickable-card" data-href="{{ url_for('item_details', item_id=item.item_id) }}">
+                <div class="row g-0">
+                    <div class="col-md-4 d-flex align-items-center justify-content-center p-2">
+                        <img src="{{ url_for('static', filename=item.photo_path) }}" class="img-fluid rounded" alt="{{ item.title }}" style="object-fit: cover; max-height: 180px;">
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.title }}</h5>
+                            <p class="card-text">{{ item.description }}</p>
+                            {% if item.seller == user_id %}
+                            <button class="btn btn-outline-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
+                            {% else %}
+                            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-outline-primary contact-seller" target="_blank">Contact Seller</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column justify-content-center border-start ps-4 pe-4">
+                        <div class="text-center">
+                            <h5 class="card-price text-danger">${{ '%.2f'|format(item.price) }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p>No items found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Modal for self-contact attempt -->
+<div class="modal fade" id="selfContactModal" tabindex="-1" aria-labelledby="selfContactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="selfContactModalLabel">Action Not Allowed</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You cannot contact yourself about your own product.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for character limit warning -->
+<div class="modal fade" id="charLimitModal" tabindex="-1" aria-labelledby="charLimitModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="charLimitModalLabel">Character Limit Exceeded</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Your search query cannot exceed 40 characters. Please enter a shorter search query.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Handle card clicks to open item details in a new tab
+    document.querySelectorAll('.clickable-card').forEach(card => {
+        card.addEventListener('click', function() {
+            window.open(this.dataset.href, '_blank'); // Open in a new tab
+        });
+    });
+
+    // Handle "Contact Seller" button clicks to open contact page in a new tab
+    const sellerButtons = document.querySelectorAll('.contact-seller');
+    sellerButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            if (button.dataset.bsTarget === '#selfContactModal') {
+                event.preventDefault(); // Prevent default action if contacting self
+                event.stopPropagation(); // Stop event from bubbling up to the parent card
+            } else {
+                event.stopPropagation(); // Prevent parent card click event
+            }
+        });
+    });
+});
+
+// Function to validate search input length
+function validateSearch() {
+    var input = document.querySelector('input[name="search_query"]');
+    if (input && input.value.length > 40) {
+        var charLimitModal = new bootstrap.Modal(document.getElementById('charLimitModal'));
+        charLimitModal.show();
+        return false;
+    }
+    return true;
+}
+</script>
 {% endblock %}

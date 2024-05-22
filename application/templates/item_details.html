@@ -1,0 +1,76 @@
+{% extends 'base_navbar.html' %}
+
+{% block title %}{{ item.title }} - SwiftSell{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/details.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Image Section -->
+            <img src="{{ url_for('static', filename=item.photo_path) }}" class="img-fluid rounded" alt="{{ item.title }}">
+        </div>
+        <div class="col-md-6">
+            <!-- Item Details Section -->
+            <h2 class = "item-title">{{ item.title }}</h2>
+            <p class="text-muted">Listed on {{ item.listed_date.strftime('%B %d, %Y') }}</p>
+            <h3 class="text-danger">${{ '%.2f'|format(item.price) }}</h3>
+            <p>{{ item.description }}</p>
+            
+            <!-- Contact Seller Button -->
+            {% if item.seller == user_id %}
+            <button class="btn btn-primary contact-seller" data-bs-toggle="modal" data-bs-target="#selfContactModal">Contact Seller</button>
+            {% else %}
+            <a href="{{ url_for('message', item_id=item.item_id) }}" class="btn btn-primary contact-seller">Contact Seller</a>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Additional Info or Actions -->
+    <div class="row mt-4">
+        <div class="col">
+            <h4>More Details</h4>
+            <p>Category: {{ item.category_name }}</p>
+            <p>Condition: {{ item.availability }}</p>
+            <p>Seller: {{ item.seller_username }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for self-contact attempt -->
+<div class="modal fade" id="selfContactModal" tabindex="-1" aria-labelledby="selfContactModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="selfContactModalLabel">Action Not Allowed</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        You cannot contact yourself about your own product.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Handle "Contact Seller" button clicks to prevent self-contact
+    const sellerButtons = document.querySelectorAll('.contact-seller');
+    sellerButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            if (button.dataset.bsTarget === '#selfContactModal') {
+                event.preventDefault(); // Prevent default action if contacting self
+                event.stopPropagation(); // Stop event from bubbling up to the parent card
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

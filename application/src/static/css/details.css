@@ -1,0 +1,11 @@
+.img-fluid {
+    max-height: 400px; /* Adjust the max-height as per your design needs */
+    width: auto; /* Keep the original aspect ratio */
+    margin-bottom: 20px; /* Provides some space below the image */
+}
+
+@media (max-width: 768px) {
+    .img-fluid {
+        max-height: 300px; /* Smaller max-height for smaller devices */
+    }
+}

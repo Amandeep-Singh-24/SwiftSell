@@ -12,6 +12,7 @@
 .form-control{
     border-radius: 5px;
     font-size: 1.15rem; /* Increased font size */
+    padding: 4px;
 }
 
 .form-group {

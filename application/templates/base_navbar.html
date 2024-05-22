@@ -4,31 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Default Title{% endblock %}</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">    
+    
+   
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TK1H5SF18F"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-TK1H5SF18F');
+    </script>
+
+
     {% block head_extra %}{% endblock %}
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100"> <!-- Flex container for body to manage footer position -->
+
     <!-- Small Header -->
     <div class="bg-dark text-light text-center py-2">
-        SFSU Software Engineering Project CSC 648-848, Spring 2024. For Demonstration Only<br>
-        | Section 03 | Team 4 |
+        SFSU Software Engineering Project CSC 648-848, Spring 2024. For Demonstration Only, Section 03 Team 4 
     </div>
 
-    <!-- Create Navbar with logo and about me -->
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
-                <img src="{{ url_for('static', filename='images/Swiftsell.jpeg') }}" alt="SwiftSell Logo" class="navbar-logo"/>
+                <img src="{{ url_for('static', filename='images/swiftsell2.jpeg') }}" alt="SwiftSell Logo" class="navbar-logo"/>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-                <!-- About Me -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn About Us</a>
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Learn About Us
+                        </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="/about/amandeepsingh">Amandeep Singh</a></li>
                             <li><a class="dropdown-item" href="/about/aymanearfaoui">Aymane Arfaoui</a></li>
@@ -38,59 +56,52 @@
                         </ul>
                     </li>
                 </ul>
-                    <!-- Search bar, categories, search submission -->
-                <form class="d-flex mx-auto" style="width: 30%;" action="/" method="get" onsubmit="return validateSearch()">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search_query" value="{{ search_query }}" style="flex-grow: 1;width: 200%;">
-                    <select class="form-select" name="category">
-                        <option value="all" {% if category == 'all' or category == '' %}selected{% endif %}>Categories...</option>
-                        {% for cat in categories %}
-                        <option value="{{ cat.categories_id }}" {% if cat.categories_id|string == category|string %}selected{% endif %}>
-                            {{ cat.category_name }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                    <button class="btn custom-search-btn" type="submit">Search</button>
+                <form class="d-flex mx-auto custom-search-form" action="/" method="get" onsubmit="return validateSearch()">
+                    <div class="input-group">
+                        <!-- Category Dropdown -->
+                        <select class="form-select" name="category">
+                            <option value="all" {% if category == 'all' or category == '' %}selected{% endif %}>All</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.categories_id }}" {% if cat.categories_id|string == category|string %}selected{% endif %}>
+                                {{ cat.category_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <!-- Search Input -->
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search_query" value="{{ search_query }}">
+                        <!-- Search Button -->
+                        <button class="btn btn-warning" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
                 </form>
-                    <!-- All other links -->
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="/post">Sell an Item</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
+                    {% if 'user_id' in session %}
+                        <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-        <!-- Search Cannot Exceed 40 characters. -->
-    <div class="modal fade" id="charLimitModal" tabindex="-1" aria-labelledby="charLimitModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="charLimitModalLabel">Character Limit Exceeded</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Your search query cannot exceed 40 characters.
-                </div>
-            </div>
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="mt-auto py-3 bg-light"> <!-- Automatically margins footer to the bottom of the flex container -->
+        <div class="container text-center">
+            &copy; 2024 SFSU Software Engineering Class - Team 4. All Rights Reserved.
         </div>
-    </div>
+    </footer>
 
-
-        <!-- Footer section -->
-<footer class="footer">
-    <div class="container text-center">
-        &copy; 2024 SFSU Software Engineering Class - Team 4. All Rights Reserved.
-    </div>
-</footer>
-
-        {% block content %}{% endblock %}
-        {% block scripts %}{% endblock %}
-
-
+    {% block scripts %}{% endblock %}    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script>
+        // Function to validate search input length
         function validateSearch() {
             var input = document.querySelector('input[name="search_query"]');
             if (input.value.length > 40) {

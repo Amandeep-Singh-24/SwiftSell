@@ -1,79 +1,187 @@
-/* Container for the authentication form */
-.auth-container {
-    padding: 20px;
-    max-width: 400px;
-    margin: auto;
-    margin-top: -5px; /* Center vertically or adjust as needed */
-}
-
-/* Authentication section */
-.auth-section {
-    max-width: 450px;
-    padding: 15px 35px 45px;
-    margin: 0 auto;
-    background-color: #fff;
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-/* Heading inside the authentication section */
-.auth-section h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Form controls */
-.auth-section .form-control {
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-/* Primary button */
-.auth-section .btn-black {
-    background-color: #000 !important;
-    color: #fff !important;
-    width: 100% !important;
-    padding: 10px !important;
-    border-radius: 5px !important;
-}
-
-/* Checkbox styles */
-.auth-section .checkbox {
-    margin-bottom: 20px;
-}
-
-/* Checkbox input */
-.auth-section .checkbox input {
-    margin-right: 5px;
-}
-
-/* Checkbox anchor tag */
-.auth-section .checkbox a {
-    text-decoration: underline;
-}
-
-/* Primary button */
-.btn-primary {
-    color: white;
-    background-color: black;
-    margin-top: 8px;
-}
-
-/* Hover styles for the primary button */
-.btn-primary:hover {
-    color: #dcdcdc;
-}
-
-/* Footer styles */
-.footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #fff;
+/* General body styles set the background color, text color, and font family for the whole page. */
+body {
+    background-color: #f8f9fa;
     color: #333;
-    text-align: center;
-    padding: 1rem 0;
-    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* The .header class styles are for the page header section, including background, text alignment, and shadow for depth. */
+.small-header {
+  background-color: #000;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 14px;
+  margin-bottom: 0; /* No bottom margin */
+}
+
+.nav-search-bar {
+  background-color: white;
+  margin-bottom: 1px;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between; /* Space between nav items */
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+body {
+	background: #fff;
+  margin-bottom: none !important;	
+}
+
+.wrapper {	
+  margin-top: 15px;
+  margin-bottom: 80px;
+}
+
+.form-signin {
+  max-width: 450px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1); 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  margin-top: 50px; 
+
+  .form-signin-heading,
+	.checkbox {
+	  margin-bottom: 30px;
+	}
+    .form-signin-heading{
+        text-align: center;
+    }
+    .form-signin-subtext{
+        text-align: center;
+        font-weight: normal;
+        font-size: smaller;
+    }
+
+	.checkbox {
+	  font-weight: normal;
+      
+	}
+    
+  .btn-lg{
+  background-color:black;
+  color: white;
+  padding: 14px 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  }
+
+	.form-control {
+      margin-top: 10px;  
+	  position: relative;
+	  font-size: 16px;
+	  height: auto;
+	  padding: 10px;
+      border-radius: 10px;
+	}
+
+	input[type="text"] {
+	  margin-bottom: -1px;
+	  border-bottom-left-radius: 0;
+	  border-bottom-right-radius: 0;
+      width: 100%;
+      border-radius: 10px;
+	}
+
+	input[type="password"] {
+	  margin-bottom: 20px;
+      margin-top: 10px;
+      width: 100%;
+	  border-top-left-radius: 0;
+	  border-top-right-radius: 0;
+      border-radius: 10px;
+      
+	}
+}
+
+/* Full-width navigation bar adjustments */
+.nav-search-bar {
+    background-color: white;
+    margin-bottom: 1px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between; /* Space between nav items */
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Navigation items styling */
+.nav-item {
+    padding: 5px 10px;
+    text-decoration: none;
+    color: black; /* Text color */
+    font-weight: bold;
+    margin: 0 10px; /* Margin around nav items for spacing */
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    color: #0056b3; /* Color change on hover */
+}
+
+/* Search form customization for inline display */
+.search-section {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Adjustments for the search input */
+.search-section .form-control {
+    flex-grow: 1;
+    border: none;
+    padding: 5px 8px;
+}
+
+/* Adjustments for the categories dropdown */
+.search-section .form-select {
+    border: none;
+    padding: 5px 8px;
+    margin-left: 5px; /* Align with the search input */
+}
+
+/* Search button styling */
+.search-section button {
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 5px; /* Align with the dropdown */
+    border-radius: 5px;
+}
+
+
+
+/* Logo styles */
+.navbar-logo {
+    height: 75px; /* or the height you want */
+    width: auto; /* maintain aspect ratio */
+}
+
+/* Responsive design for cards */
+@media (max-width: 768px) {
+  
+    .nav-search-bar {
+        flex-direction: column;
+        align-items: stretch; /* Align items to stretch to full width */
+    }
+    
+    .nav-item {
+        margin-bottom: 5px; /* Space below each item */
+    }
+    
+    .search-section {
+        order: 3; /* Position the search section last */
+        margin-top: 10px; /* Space above the search section */
+    }
 }
